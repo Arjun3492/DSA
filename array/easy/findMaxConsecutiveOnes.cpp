@@ -7,6 +7,7 @@
 // If  the value at the current index is equal to 1 we increase the value of count by one. After updating  the count variable if it becomes more than the max_count  update the max_count.
 // If the value at the current index is equal to zero we make the variable count as 0 since there are no more consecutive ones.
 
+
  
  int findMaxConsecutiveOnes(vector<int>& nums) {
         int max_ones=0,count=0;
