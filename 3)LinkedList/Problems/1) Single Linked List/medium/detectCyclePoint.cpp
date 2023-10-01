@@ -1,3 +1,5 @@
+// Tortoise and hare OR Floyd's Cycle Detection Algorithm
+
 // Problem Statement: Given the head of a linked list,
 // return the node where the cycle begins. If there is no cycle, return null.
 
@@ -25,7 +27,7 @@ Node *firstNode(Node *head)
     return NULL;
 }
 
-// Approach 2: Two Pointer[Floyd's Cycle Detection Algorithm]
+// Approach 2: Two Pointer[Floyd's Cycle Detection Algorithm ]
 // We create two pointers slow and fast.
 // We iterate over the linked list till the next of the fast pointer is NULL.
 // We move the slow pointer by one and the fast pointer by two.
@@ -54,6 +56,10 @@ Node *firstNode(Node *head)
         {
             break;
         }
+    }
+    if (fast->next == NULL)
+    {
+        return NULL;
     }
     slow = head;
     while (slow != fast)
