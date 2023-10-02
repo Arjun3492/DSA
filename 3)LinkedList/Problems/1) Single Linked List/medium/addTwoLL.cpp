@@ -5,6 +5,7 @@
 // Example:
 // Input: l1 = [2,4,3], l2 = [5,6,4]
 // Output: [7,0,8]
+// Image ref:https://lh3.googleusercontent.com/-6tuYtP69ITIp3DBjDKYupMDWHd2y3SruICs-HEMZtYnVTlwARbbsMRyfVkaOK5mnJC2N7DqcrcqfoQqXrTmFDEIGz1BlrjzUVfl3nd0QK6Q6ja0k-sF7X1BZJ2FtXNCruTAN1U=s1600
 
 // Approach:
 // 1. Traverse both linked lists and add the digits at the same position.
@@ -22,7 +23,7 @@ Node *addTwoNumbers(Node *num1, Node *num2)
     // Continue processing until both linked lists and carry are fully processed
     while (num1 != nullptr || num2 != nullptr || carry)
     {
-        // Add the digits at the same position & carry to "sum"
+        // Add the digits at the same position & carry to "sum" & update pointers
         int sum = 0;
         if (num1)
         {
