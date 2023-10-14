@@ -42,6 +42,7 @@ int factorial(int n) {
     }
 
     // Recursive Case
+    //Since we know that n! = n * (n-1)!, we can use this to calculate the factorial recursively.
     return n * factorial(n - 1);
 }
 ```
@@ -59,6 +60,7 @@ int fibonacci(int n) {
     }
 
     // Recursive Case
+    // Since we know that the Fibonacci sequence is defined by the sum of the previous two numbers, we can use this to calculate the nth Fibonacci number recursively.
     return fibonacci(n - 1) + fibonacci(n - 2);
 }
 ```
