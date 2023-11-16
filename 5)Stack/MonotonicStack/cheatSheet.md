@@ -12,9 +12,60 @@ A monotonic stack is a data structure that maintains a monotonic sequence, eithe
 - [Next Smaller Element I](https://leetcode.com/problems/next-smaller-element-i/)
 - [Previous Smaller Element I](https://leetcode.com/problems/previous-smaller-element-i/)
 
+## Note:
+
+### For previous greater / smaller element we need to traverse the array from left to right
+
+### For next greater / smaller element we need to traverse the array from right to left
+
 ## Usage
 
-For next greater /
+### For previous / next smaller use a decreasing monotonic stack
+
+```cpp
+// decreasing monotonic stack for next / previous smaller element
+for (int i = 0; i < n; i++) {
+    //previous smaller element
+              while(!s1.empty() && nums[s1.top()]>=nums[i]){
+                s1.pop();
+            }
+            if(!s1.empty())cout<<"The previous smaller element of "<<nums[i]<<"is"<<  nums[s1.top()];
+            s1.push(i);
+  }
+
+for (int i = n-1; i >=0; i--) {
+    //next smaller element
+              while(!s2.empty() && nums[s2.top()]>=nums[i]){
+                s2.pop();
+            }
+            if(!s2.empty())cout<<"The next smaller element of "<<nums[i]<<"is"<<  nums[s2.top()];
+            s2.push(i);
+  }
+```
+
+### For next / previous greater use a increasing monotonic stack
+
+```cpp
+
+// increasing monotonic stack for next greater element / previous greater element
+for (int i = 0; i < n; i++) {
+    //previous greater element
+              while(!s1.empty() && nums[s1.top()]<=nums[i]){
+                s1.pop();
+            }
+            if(!s1.empty())cout<<"The previous greater element of "<<nums[i]<<"is"<<  nums[s1.top()];
+            s1.push(i);
+  }
+
+for (int i = n-1; i >=0; i--) {
+    //next greater element
+              while(!s2.empty() && nums[s2.top()]<=nums[i]){
+                s2.pop();
+            }
+            if(!s2.empty())cout<<"The next greater element of "<<nums[i]<<"is"<<  nums[s2.top()];
+            s2.push(i);
+  }
+```
 
 ## Implementation
 

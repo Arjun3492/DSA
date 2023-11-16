@@ -80,7 +80,7 @@ int sumSubarrayMins(vector<int> &arr)
     {
         int leftBoundary = previousSmaller[i] + 1;
         int rightBoundary = nextSmaller[i] + 1;
-        ans += (arr[i] * leftBoundary * rightBoundary);
+        sum += (arr[i] * leftBoundary * rightBoundary);
     }
     return sum % mod;
 }

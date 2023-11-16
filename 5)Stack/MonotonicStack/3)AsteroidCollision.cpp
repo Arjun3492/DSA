@@ -11,8 +11,8 @@
 // Approach: Stack
 // We use a stack to keep the track of the asteroids.
 // Starting from the left of the array, we check if the current asteroid is positive or negative.
-//     If the current asteroid is positive, we push it to the stack.\
-//If the current asteroid is negative, we check if the top element of the stack is positive or negative.
+//  If the current asteroid is positive, we push it to the stack.\
+// If the current asteroid is negative, we check if the top element of the stack is positive or negative.
 // If the top element of the stack is positive, we check if the absolute value of the top element is greater than the
 // absolute value of the current element. If yes, we do nothing. If no, we pop the top element of the stack and repeat the
 // process until the top element of the stack is negative or the absolute value of the top element is greater than the
