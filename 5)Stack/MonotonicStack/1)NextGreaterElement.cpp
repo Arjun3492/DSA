@@ -65,3 +65,28 @@ vector<int> nextGreaterElement(vector<int> &arr, int n)
     }
     return ans;
 }
+
+// Approach2.1:Starting from the start of the array
+// if at any point the top of the stack is less than the current element ,
+// then the current element is the "next greater element" for top element of the stack .(since we are traversing from the start)
+
+// example: 1 2 3 4 5 6 7
+// lets say we are at 2 and the stack is 1
+// now we see that 2>1 so 2 is the next greater element for 1
+// so we pop 1 and push 2
+// now we are at 3 and the stack is 2 and we see that 3>2 so 3 is the next greater element for 2 and so on
+vector<int> nextGreaterElement(vector<int> &arr, int n)
+{
+    vector<int> ans(n, -1);
+    stack<int> st;
+    for (int i = 0; i < n; i++)
+    {
+        while (!st.empty() && st.top() <= arr[i])
+        {
+            ans[i] = st.top();
+            st.pop();
+        }
+        st.push(arr[i]);
+    }
+    return ans;
+}
