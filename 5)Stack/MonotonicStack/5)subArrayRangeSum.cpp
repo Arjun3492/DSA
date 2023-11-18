@@ -4,6 +4,8 @@
 // Return the sum of all subarray ranges of nums.
 // A subarray is a contiguous non-empty sequence of elements within an array.
 
+// video :https://youtu.be/9-TXIVEXX2w?si=qnEcStW1gP_J4PUZ
+
 // Example: nums = [1, 2, 3, 4]
 // Subarrays: [1], [2], [3], [4], [1, 2], [2, 3], [3, 4], [1, 2, 3], [2, 3, 4], [1, 2, 3, 4]
 // Range of subarrays: 0, 0, 0, 0, 1, 1, 1, 2, 2, 3

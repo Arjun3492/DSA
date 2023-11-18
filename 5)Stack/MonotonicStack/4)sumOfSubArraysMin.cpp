@@ -1,5 +1,7 @@
 // Problem Statement: Find the sum of min of all subarrays of an array.
 
+// Video:https://www.youtube.com/watch?v=9-TXIVEXX2w
+
 // Example: arr = [3, 1, 2, 4]
 // Subarrays: [3], [1], [2], [4], [3, 1], [1, 2], [2, 4], [3, 1, 2], [1, 2, 4], [3, 1, 2, 4]
 // Min of all subarrays: 3, 1, 2, 4, 1, 1, 2, 1, 1, 1
