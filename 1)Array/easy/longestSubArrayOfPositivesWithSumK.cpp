@@ -1,45 +1,60 @@
 // Longest Subarray with given Sum K(Positives)
 // Problem Statement: Given an array and a sum k, we need to print the length of the longest subarray that sums to k.
 
-// Approach
-// Using two pointer approach where in we are adding each subsequent right element of array to sum
-// if sum becomes > k ,we are reducing the array from left (sum=sum-arr[left],left ++ )
-//  if sum == k , we are updating the max length
-int longestSubarrayWithSumK(vector<int> a, long long k)                                                                                            {
-    int n = a.size()                                                                                                                               ;
-    int right = 0, left = 0                                                                                                                        ;
-    long long sum = 0                                                                                                                              ;
-    int maxLen = 0                                                                                                                                 ;
-    while (right < n)                                                                                                                              {
-        sum += a[right];                                                                                                                           ;
-         while (sum > k && left <= right)                                                                                                          {
-            sum -= a[left]                                                                                                                         ;
-            left++                                                                                                                                ;}
-        if (sum == k)                                                                                                                              {
-            maxLen = max(maxLen, right - left + 1)                                                                                                ;}
-        right++                                                                                                                                   ;}
-    return maxLen                                                                                                                                 ;}
-
-
-
-//Brute force approach
-int getLongestSubarray(vector<int> &nums, int k) {
+// Brute force approach
+// TC: O(n^2)
+// SC: O(1)
+int getLongestSubarray(vector<int> &nums, int k)
+{
   // Write your code here
   // Brute force computing all subarrays
   int n = nums.size();
   int maxLen = 0;
-  for (int i = 0; i < n; i++) {
+  for (int i = 0; i < n; i++)
+  {
     int sum = 0;
-    for (int j = i; j < n; j++) {
+    for (int j = i; j < n; j++)
+    {
       // subarray[i to j]
       sum += nums[j];
-      if (sum > k) {
+      if (sum > k)
+      {
         break; // skipping to next subarray with start index i+1;
       }
-      if (sum == k) {
+      if (sum == k)
+      {
         maxLen = max(maxLen, j - i + 1);
       }
     }
+  }
+  return maxLen;
+}
+// Opimal Approach
+// TC: O(n)
+// SC: O(n)
+// Using two pointer approach where in we are adding each subsequent right element of array to sum
+// if sum becomes > k ,we are reducing the array from left (sum=sum-arr[left],left ++ )
+//  if sum == k , we are updating the max length
+int longestSubarrayWithSumK(vector<int> a, long long k)
+{
+  int n = a.size();
+  int right = 0, left = 0;
+  long long sum = 0;
+  int maxLen = 0;
+  while (right < n)
+  {
+    sum += a[right];
+    ;
+    while (sum > k && left <= right)
+    {
+      sum -= a[left];
+      left++;
+    }
+    if (sum == k)
+    {
+      maxLen = max(maxLen, right - left + 1);
+    }
+    right++;
   }
   return maxLen;
 }

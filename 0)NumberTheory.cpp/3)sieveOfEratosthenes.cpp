@@ -8,6 +8,7 @@
 // Approach 2: Sieve of Eratosthenes
 // Time complexity:O(n*log(log(n)))
 // Space complexity:O(n)
+// Pictorial representation : https://upload.wikimedia.org/wikipedia/commons/b/b9/Sieve_of_Eratosthenes_animation.gif
 
 vector<int> sieveOfEratosthenes(int n)
 {
@@ -19,7 +20,7 @@ vector<int> sieveOfEratosthenes(int n)
         {
             ans.push_back(i);
             for (int j = i * i; j <= n; j += i)
-            // we are starting from i*i because all the numbers before that will already be marked by their factors less than i
+            // we are starting from i*i because all the numbers before that will already be marked by their factors which are less than i
             {
                 isPrime[j] = true;
             }
