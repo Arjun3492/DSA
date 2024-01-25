@@ -4,6 +4,10 @@
 // Brute force approach
 // TC: O(n^2)
 // SC: O(1)
+
+// Hashing approach wherein,we would store the sum till the current index
+// in a mapping of sum to index , and check if "sum-k" exists in map,
+// if yes then we'd strip that subarray from the current subarray
 int getLongestSubarray(vector<int> &nums, int k)
 {
   // Write your code here

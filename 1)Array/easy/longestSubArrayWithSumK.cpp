@@ -22,6 +22,13 @@ int getLongestSubarray(vector<int> &nums, int k)
 
 // Optimal approach hashing
 
+// Hashing approach wherein,we would store the sum till the current index
+// in a mapping of sum to index , and check if "sum-k" exists in map,
+// if yes then we'd strip that subarray from the current subarray
+
+// TC: O(n)
+// SC: O(n)
+
 #include <bits/stdc++.h>
 int getLongestSubarray(vector<int> &nums, int k)
 {
