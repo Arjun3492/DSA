@@ -28,7 +28,7 @@ int findAllSubarraysWithGivenSum(vector<int> &arr, int k)
 
 // Optimal approach
 // Using prefix sum method
-// We will use a map to store the frequency of prefix sum
+// We will use a map to store the frequency of each prefix sum
 // and then we will check if the remainder of current sum and k is present in map
 // we will increase the count by the frequency of remainder(if not present frequency by default is 0)
 // Time Complexity: O(n)
@@ -37,7 +37,8 @@ int findAllSubarraysWithGivenSum(vector<int> &arr, int k)
 
   // Using prefix sum method
   map<int, int> prefixSum;
-  prefixSum[0] = 1;
+  prefixSum[0] = 1; // since if remainder is 0, it means the sum of subarray from start till current index is equal to k ,hence increase the count
+
   int sum = 0;
   int c = 0;
   int n = arr.size();

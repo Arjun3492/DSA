@@ -4,8 +4,8 @@
 
 // Link:https://takeuforward.org/data-structure/trapping-rainwater
 
-// Approach:the amount the water stored at a particular index is the "minimum of maximum" elevation to the
-// left and right of the index minus the elevation at that index.
+// Approach:the amount the water stored at a particular index is the minimum of "maximum elevation to the
+// left and right" of the index minus the elevation at that index.
 
 // waterTrapped[i] = min(maxLeft, maxRight) - elevation[i]
 
@@ -41,7 +41,8 @@ int trap(vector<int> &arr)
 }
 
 // Better Approach:Use two arrays to store the maximum elevation to the left and right of the index.[hashing]
-//  Time Complexity: O(n) Space Complexity: O(2n)
+//  Time Complexity: O(n)
+// Space Complexity : O(2n)
 
 // Approach: Take 2 array prefix and suffix array and precompute the leftMax and rightMax for each index beforehand.
 // Then use the formula min(prefix[I], suffix[i])-arr[i] to compute water trapped at each index.

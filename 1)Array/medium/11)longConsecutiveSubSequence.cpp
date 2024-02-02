@@ -87,6 +87,8 @@ int longestSuccessiveElements(vector<int> &a)
 // STEP5.4: update maxCount=max(maxCount,count)
 // STEP6: return maxCount
 
+// Time Complexity: O(n)
+
 int longestSuccessiveElements(vector<int> &a)
 {
     unordered_set<int> s;
