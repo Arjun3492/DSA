@@ -32,6 +32,7 @@ int findAllSubarraysWithGivenSum(vector<int> &arr, int k)
 // and then we will check if the remainder of current sum and k is present in map
 // we will increase the count by the frequency of remainder(if not present frequency by default is 0)
 // Time Complexity: O(n)
+// Space Complexity: O(n), as
 int findAllSubarraysWithGivenSum(vector<int> &arr, int k)
 {
 

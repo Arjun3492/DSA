@@ -44,7 +44,7 @@ int trap(vector<int> &arr)
 //  Time Complexity: O(n)
 // Space Complexity : O(2n)
 
-// Approach: Take 2 array prefix and suffix array and precompute the leftMax and rightMax for each index beforehand.
+// Approach: Take 2 array prefix and suffix array and precompute the leftMax and rightMax for each index as we traverse the array.
 // Then use the formula min(prefix[I], suffix[i])-arr[i] to compute water trapped at each index.
 
 int trap(vector<int> &arr)
@@ -75,10 +75,9 @@ int trap(vector<int> &arr)
 // Approach: Take 2 pointers l(left pointer) and r(right pointer) pointing to 0th and (n-1)th index respectively.
 // Take two variables leftMax and rightMax and initialize them to 0. If height[l] is less than or equal to
 // height[r] then if leftMax is less than height[l] update leftMax to height[l] else add leftMax-height[l]
-// to your final answer and move the l pointer to the right i.e l++. If height[r] is less than height[l],
+// to your final answer and finally move the l pointer to the right i.e l++.Else If height[r] is less than height[l],
 // then now we are dealing with the right block. If height[r] is greater than rightMax, then update rightMax to
-// height[r] else add rightMax-height[r] to the final answer. Now move r to the left. Repeat these steps till l and
-// r crosses each other.
+// height[r] else add rightMax-height[r] to the final answer and finally move r to left by r--. Repeat these steps till l<r
 
 // Intuition: We need a minimum of leftMax and rightMax.So if we take the case when height[l]<=height[r]
 // we increase l++, so we can surely say that there is a block with a height more than height[l] to the
