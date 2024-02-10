@@ -85,6 +85,9 @@ vector<vector<int>> triplet(int n, vector<int> &arr)
 // Step7: If the sum is equal to 0, then push the triplet to ans and increment the left pointer and decrement the right pointer
 // Step8: Return the ans
 
+// TC:O(N3)
+// SC:O(1)
+
 vector<vector<int>> triplet(int n, vector<int> &arr)
 {
     sort(arr.begin(), arr.end());
