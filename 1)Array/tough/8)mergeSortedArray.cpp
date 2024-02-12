@@ -120,6 +120,8 @@ void mergeTwoSortedArraysWithoutExtraSpace(vector<long long> &a,
 // If the element at left is greater than the element at right, then we will swap the elements
 // else we will break the loop(As the elements are already in sorted order,we do not need to check for further elements)
 // Finally we will sort the two arrays
+// Time complexity: O(nlogn)
+// Space complexity: O(1)
 
 void mergeTwoSortedArraysWithoutExtraSpace(vector<long long> &a,
                                            vector<long long> &b)

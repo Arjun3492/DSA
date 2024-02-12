@@ -2,6 +2,8 @@
 // Problem Statement: Given an array of integers A and an integer B.
 // Find the total number of subarrays having bitwise XOR of all elements equal to k.
 
+// Link:https://www.codingninjas.com/studio/problems/subarrays-with-xor-k_6826258
+
 // Example:
 // Input: A = [4, 2, 2, 6, 4], B = 6
 // Output: 4

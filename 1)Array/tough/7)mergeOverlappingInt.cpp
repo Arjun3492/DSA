@@ -2,6 +2,8 @@
 // Problem Statement: Given an array of intervals, merge all the overlapping intervals
 // and return an array of non-overlapping intervals.
 
+// Link:https://www.codingninjas.com/studio/problems/merge-all-overlapping-intervals_6783452
+
 // Example:
 // Input: [[1, 3], [2, 6], [8, 10], [15, 18]]
 // Output: [[1, 6], [8, 10], [15, 18]]
