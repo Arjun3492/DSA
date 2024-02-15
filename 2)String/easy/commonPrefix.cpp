@@ -1,19 +1,22 @@
-//Problem:Find the common prefix in the given array of strings
-//Example:
-//Input: arr[] = {"geeksforgeeks", "geeks", "geek", "geezer"}
-//Output: "gee"
-//Explanation: Longest common prefix of all the strings is "gee".
-//
+// Problem:Find the common prefix in the given array of strings
+// Example:
+// Input: arr[] = {"geeksforgeeks", "geeks", "geek", "geezer"}
+// Output: "gee"
+// Explanation: Longest common prefix of all the strings is "gee".
 
+// Link:https://www.codingninjas.com/studio/problems/longest-common-prefix_628874
 
-//Optimal Approach
-//We sort the array of strings(lexicographically sorted array of strings will have the common prefix at the first and last string,if any)
-//We take the first and last string and compare them character by character
-//If the characters are same we add them to the ans string
-//If the characters are not same we return the ans string
-//If we reach the end of the loop we return the ans string
+// Optimal Approach
+// We sort the array of strings(lexicographically sorted array of strings will have the common prefix at the first and last string,if any)
+// We take the first and last string and compare them character by character
+// If the characters are same we add them to the ans string
+// If the characters are not same we return the ans string
+// If we reach the end of the loop we return the ans string
+// Time complexity: O(nlogn)
+// Space complexity: O(1)
 
-string commonPrefix(vector<string> &arr, int n) {
+string commonPrefix(vector<string> &arr, int n)
+{
   // Write your code here
   string ans = "";
   sort(arr.begin(), arr.end());
