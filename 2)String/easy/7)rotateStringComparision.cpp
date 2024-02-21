@@ -47,7 +47,7 @@ int isCyclicRotation(string &p, string &q)
 int isCyclicRotation(string &p, string &q)
 {
   return (p.size() == q.size()) &&
-         ((p + p).find(q) != std::string::npos);
+         ((p + p).find(q) != string::npos);
   // find returns the position of the first occurrence of substring q in the string p+p
   // if the substring is not found, it returns string::npos
   // npos is a static member constant value with the greatest possible value for an element of type size_t.
