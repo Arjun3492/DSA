@@ -5,17 +5,19 @@
 // Note: "aba" is also a valid answer.
 // Example 2:
 // Input: s = "cbbd"
+// Output: "bb"
+
+// Link:https://leetcode.com/problems/longest-palindromic-substring/description/
 
 // Approach 1: Brute force
 // We use a nested for loop to iterate over all the substrings of the string s.
 // We use a function isPalindrome to check if the substring is a palindrome or not.
 // We use a variable ans to store the longest palindromic substring.
-// We iterate over the string s and check if the substring is a palindrome or not.
-// If the substring is a palindrome, we check if the length of the substring is greater than the length of the longest palindromic substring.
-// If the length of the substring is greater than the length of the longest palindromic substring, we update the longest palindromic substring.
+// If the substring is a palindrome, we update the longest palindromic substring accordingly.
 // Time complexity: O(n^3)
 // Space complexity: O(1)
 // where n is the length of the string s.
+
 bool isPalindrome(string s)
 {
     int n = s.length();
@@ -58,6 +60,7 @@ string longestPalindrome(string s)
 // Time complexity: O(n^2)
 // Space complexity: O(1)
 // where n is the length of the string s.
+
 string expandAroundCenter(string s, int left, int right)
 {
     int n = s.length();
@@ -92,6 +95,7 @@ string longestPalindrome(string s)
 }
 
 // Same approach as above but with a different implementation
+
 string longestPalindrome(string s)
 {
     int n = s.length();
