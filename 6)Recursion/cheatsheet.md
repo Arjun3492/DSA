@@ -1,17 +1,23 @@
 //Press Ctrl+K V to preview
 
+## Important videos to watch
+
+1. [Recursion Basics](https://youtu.be/ngCos392W4w?si=r5so3n-gtFBptpbw)
+2. [All Kind of Patterns in Recursion](https://youtu.be/eQCS_v3bw0Q?si=n0RyOPLx_ncn2jI4)
+
 ### Recursion Basics
 
-1. **What is Recursion?**
+
+3. **What is Recursion?**
 
    - Recursion is a programming technique where a function calls itself in order to solve a problem.
 
-2. **Base Case:**
+4. **Base Case:**
 
    - Every recursive function must have one or more base cases to prevent infinite recursion.
    - Base cases are the simplest, terminating cases that do not make further recursive calls.
 
-3. **Recursive Case:**
+5. **Recursive Case:**
    - The part of the function that makes the recursive call(s) to solve a smaller or simpler subproblem.
 
 ### Steps for Writing Recursive Functions

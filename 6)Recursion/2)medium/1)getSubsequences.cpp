@@ -14,20 +14,12 @@
 // Link : https://www.codingninjas.com/studio/problems/print-subsequences_8416366
 
 // Intuition
-// We will have two choices for each character in the string
-// 1. we can include it in the subsequence.
-// 2. we can exclude it from the subsequence.
-// We will make a recursive call for both the choices and keep track of the current subsequence.
-// We will keep adding the current subsequence to the answer whenever we reach the end of the string.
-
-// Approach
-// 1. Create a vector of strings to store the answer.
-// 2. Create a helper function that will take the current index, the input string, and the current subsequence as arguments.
-// 3. If the current index is equal to the length of the input string, add the current subsequence to the answer.
-// 4. Otherwise, make two recursive calls:
-//    a. Include the current character in the subsequence and make a recursive call with the next index.
-//    b. Exclude the current character from the subsequence and make a recursive call with the next index.
-// 5. Return the answer.
+// We will have two choices for each element in the array:
+// 1. We can include the element in the subset.
+// 2. We can exclude the element from the subset.
+// When we include the element in the subset, we will make a recursive call with the next index and the updated subset.
+// When we exclude the element from the subset, we will make a recursive call with the next index and the same subset.
+// We will add the subset to the ans vector when we reach the end of the array.(base condition)
 
 // Time complexity: O(2^n)
 // Space complexity: O(2^n) [stack space]
