@@ -10,7 +10,7 @@
 // Link : https://www.naukri.com/code360/problems/boundary-traversal-of-binary-tree_790725
 
 // Approach :
-//  We will divide the boundary traversal into three parts:
+// We will divide the boundary traversal into three parts:
 // Left Boundary, Leaf Nodes, Right Boundary
 // For the left boundary, we will traverse the left subtree in a top-down manner and add the nodes.
 // For the leaf nodes, we will traverse the tree in an inorder manner and add the leaf nodes.
