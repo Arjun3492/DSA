@@ -1,4 +1,4 @@
-// Maximum  Arbitiary Width of Binary Tree
+// Maximum Arbitrary Width of Binary Tree
 
 // Problem statement:
 //  Given the root of a binary tree, return the maximum width of the given tree.
@@ -7,6 +7,8 @@
 // The width of one level is defined as the length between the end-nodes (the leftmost and
 // rightmost non-null nodes), where the null nodes between the end-nodes that would be present
 // in a complete binary tree extending down to that level are also counted into the length calculation.
+
+// Link : https://leetcode.com/problems/maximum-width-of-binary-tree/description/
 
 // Approach:
 // Since we have to consider the null nodes as well, we will assign a unique index to each node.
