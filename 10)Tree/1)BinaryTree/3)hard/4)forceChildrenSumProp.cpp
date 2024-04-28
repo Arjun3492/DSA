@@ -11,6 +11,8 @@
 //  Since we can only increment the value of nodes , we will try to increase the value of children node to suffice the children sum property while following depth order traversal.
 // This will ensure that there is never a shortage of value in the children nodes to sum up to the parent node.(In a case where the parent node has a greater value than the sum of its children and we can only increment the value of nodes)
 //  And while returning from the recursion, we will update the value of node to the sum of its children.
+//  Time complexity: O(N), where N is the number of nodes in the tree.
+//  Space complexity: O(N) [Stack space] .
 
 // Function to change the values of the nodes
 // based on the sum of its children's values.
