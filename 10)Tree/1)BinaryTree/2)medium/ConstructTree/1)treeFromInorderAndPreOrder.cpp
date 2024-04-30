@@ -1,6 +1,8 @@
-// //Problem statement
-// You have been given the preorder and inorder traversal of a binary tree.
-// Your task is to construct a binary tree using the given inorder and preorder traversals
+// Construct Binary Tree from Inorder and Preorder Traversal
+
+// Problem statement
+//  You have been given the preorder and inorder traversal of a binary tree.
+//  Your task is to construct a binary tree using the given inorder and preorder traversals
 
 // Link : https://www.naukri.com/code360/problems/construct-binary-tree-from-inorder-and-preorder-traversal_920539
 
