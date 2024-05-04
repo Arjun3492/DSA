@@ -17,8 +17,8 @@
 // Space Complexity: O(1) //Speciality of Morris Traversal
 
 // Note: Only change between Morris Preorder and Morris Inorder is the position of the print statement.
-// In Morris Preorder, we print the current node before moving to the left subtree.
 // In Morris Inorder, we print the current node after coming back from the left subtree.
+// In Morris Preorder, we print the current node before moving to the left subtree.
 
 void morrisPreorderTraversal(TreeNode<int> *node, vector<int> &ans)
 {
