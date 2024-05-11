@@ -22,7 +22,7 @@ void markNeighbours(vector<vector<int>> &grid, queue<pair<int, int>> &q, int i,
                     int j, int n, int m)
 {
     // Traversing the adjacent neighbours
-    // We can just use all combination of row +- 1 and col +-1 for visiting anf marking adj neighbours
+    // We can just use all combination of row ± 1 and col ±1 for visiting anf marking adj neighbours
     for (int x = -1; x <= 1; x++)
     {
         for (int y = -1; y <= 1; y++)
