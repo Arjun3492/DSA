@@ -16,7 +16,7 @@
 //  by checking if the current distance to a node is less than the previous distance stored in the distance array.
 
 // Dijkstra's Algorithm using priority queue
-//  Time complexity: O(ElogV)
+// Time Complexity: O((V+E)*logV). Going through N nodes and E edges and log N for priority queue
 //  Space complexity: O(V)
 vector<int> dijkstraUsingQueue(vector<vector<pair<int, int>>> &adjacencyList,
                                vector<int> &distances, int source)

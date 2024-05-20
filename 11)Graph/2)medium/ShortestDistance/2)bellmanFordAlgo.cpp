@@ -22,6 +22,10 @@
 
 // Relaxation : distance[u] + weight < distance[v] then distance[v] = distance[u] + weight
 
+// Complexity Analysis
+//  Time complexity: O(V*E) where V is the number of vertices and E is the number of edges
+//  Space complexity: O(V) for storing the distances
+
 vector<int> bellmonFord(int n, int m, int src, vector<vector<int>> &edges)
 {
 
