@@ -9,6 +9,8 @@
 // isEmpty: return 1 if topIndex is -1, else return 0
 // isFull: return 1 if topIndex is equal to size - 1, else return 0
 //  Stack class.
+
+// Link : https://www.naukri.com/code360/problems/stack-implementation-using-array_3210209
 class Stack
 {
 private:

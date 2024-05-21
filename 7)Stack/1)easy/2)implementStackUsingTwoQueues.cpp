@@ -1,5 +1,7 @@
 // Problem Statement: Implement a Stack using two Queues.
 
+// Link : https://www.naukri.com/code360/problems/stack-using-queue_795152
+
 // Working
 //  This implementation of a stack using two queues in C++ works by maintaining the stack's last-in, first-out (LIFO) behavior through a clever arrangement of the two queues (mainQueue and tempQueue). Here's a short explanation of how it works:
 

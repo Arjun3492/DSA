@@ -1,5 +1,7 @@
 // Problem statement:Implement stack using single queue
 
+// Link : https://www.geeksforgeeks.org/implement-a-stack-using-single-queue/
+
 // Solution:
 // We compute the current the size of the queue and then push the new element into the queue.
 //  then using a loop we pop the elements from the front and push them back into the queue.

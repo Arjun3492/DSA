@@ -1,5 +1,7 @@
 // Implement stack using linked list
 
+// Link : https://www.naukri.com/code360/problems/implement-stack-with-linked-list_630475
+
 // Solution:
 // We use a linked list to implement a stack. The top of the stack is the head of the linked list.
 //  We can push an element onto the stack by creating a new node with the given data and pointing it to the current top and updating the top to the new node.
