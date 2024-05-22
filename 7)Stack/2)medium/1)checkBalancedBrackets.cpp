@@ -7,6 +7,8 @@
 // Output: true
 // Explanation: The string is balanced as all the parentheses are closed in the correct order.
 
+// Link : https://www.naukri.com/code360/problems/balanced-parentheses_8162202
+
 // Solution:
 // When we encounter an opening parenthesis, we push it onto the stack.
 // When we encounter a closing parenthesis, we check if it matches the corresponding top of the stack(Opening bracket).

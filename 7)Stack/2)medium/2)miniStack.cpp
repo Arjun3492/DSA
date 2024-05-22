@@ -1,8 +1,9 @@
 // Implement Min Stack : O(2N) and O(N) Space Complexity
-// Link https://takeuforward.org/data-structure/implement-min-stack-o2n-and-on-space-complexity/
 
 // Problem Statement: Implement Min Stack | O(2N) and O(N) Space Complexity.
 // Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+
+// Link https://www.naukri.com/code360/problems/min-stack_3843991
 
 // Approach 1: using stack of pairs
 // We push elements into stack as pairs while maintaining the minimum element so far as second element of pair.

@@ -5,6 +5,8 @@
 // Input: arr = [4, 2, 1, 5, 3]
 // Output: [2, 1, -1, 3, -1]
 
+// Link : https://www.naukri.com/code360/problems/immediate-smaller-element_1062597
+
 // Approach: Stack
 // We use a stack to keep the track of the next element.
 // We traverse the array from right to left.
