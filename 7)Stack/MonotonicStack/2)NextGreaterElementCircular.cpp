@@ -3,10 +3,12 @@
 // The next greater element for an element x is the first element greater than x that we come across while traversing
 // the array in a clockwise manner. If it doesn’t exist, return -1 for this element.
 
-// Stack approach
-// Steps:
-// Similar to previous problem, we use a monotonic stack.
-// In this case, we traverse the array twice to mimic the circular traversal.
+// Link : https://www.naukri.com/code360/problems/next-greater-element-ii_6212757
+
+//  Stack approach
+//  Steps:
+//  Similar to previous problem, we use a monotonic stack.
+//  In this case, we traverse the array twice to mimic the circular traversal.
 
 // Function to find the Next Greater Element in a given circular array
 vector<int> nextGreaterElementII(vector<int> &a)

@@ -6,12 +6,14 @@
 // Input: arr = [1, 2, 3, 4, 5, 6, 7]
 // Output: [2, 3, 4, 5, 6, 7, -1]
 
-// BRUTE FORCE APPROACH
-// Steps:
-// 1. Create an empty vector of size n and initialize all elements with -1.
-// 2. For each element in the array, check if there is any element greater than the current element on the right side.
-// 3. If there is any element greater than the current element, then update the GRE of the current element in the ans vector.
-// 4. Return the ans vector.
+// Link : https://www.naukri.com/code360/problems/next-greater-element_670312
+
+//  BRUTE FORCE APPROACH
+//  Steps:
+//  1. Create an empty vector of size n and initialize all elements with -1.
+//  2. For each element in the array, check if there is any element greater than the current element on the right side.
+//  3. If there is any element greater than the current element, then update the GRE of the current element in the ans vector.
+//  4. Return the ans vector.
 
 vector<int> nextGreaterElement(vector<int> &arr, int n)
 {
