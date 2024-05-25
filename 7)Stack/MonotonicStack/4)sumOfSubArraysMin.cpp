@@ -1,6 +1,8 @@
-// Problem Statement: Find the sum of min of all subarrays of an array.
+// Problem Statement: Sum of min of all subarrays of an array.
 
 // Video:https://www.youtube.com/watch?v=9-TXIVEXX2w
+
+// Link : https://www.naukri.com/code360/problems/sum-of-the-minimum-values-in-subarrays_1473824
 
 // Example: arr = [3, 1, 2, 4]
 // Subarrays: [3], [1], [2], [4], [3, 1], [1, 2], [2, 4], [3, 1, 2], [1, 2, 4], [3, 1, 2, 4]

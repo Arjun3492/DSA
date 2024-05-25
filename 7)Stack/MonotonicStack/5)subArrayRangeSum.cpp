@@ -6,6 +6,8 @@
 
 // video :https://youtu.be/9-TXIVEXX2w?si=qnEcStW1gP_J4PUZ
 
+// Link : https://www.naukri.com/code360/problems/subarray-range-sum_8365419
+
 // Example: nums = [1, 2, 3, 4]
 // Subarrays: [1], [2], [3], [4], [1, 2], [2, 3], [3, 4], [1, 2, 3], [2, 3, 4], [1, 2, 3, 4]
 // Range of subarrays: 0, 0, 0, 0, 1, 1, 1, 2, 2, 3
