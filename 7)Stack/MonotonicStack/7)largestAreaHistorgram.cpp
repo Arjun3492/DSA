@@ -4,6 +4,8 @@
 
 // Video:https://www.youtube.com/watch?v=X0X6G-eWgQ8
 
+// Link : https://www.naukri.com/code360/problems/largest-rectangle-in-a-histogram_1058184
+
 // Example 1:
 // Input: heights = [2,1,5,6,2,3]
 // Output: 10
@@ -15,6 +17,9 @@
 //  Which marks the left and right bounds of each bar up to which the bar can extend in width.
 //  We calculate the area of each bar and return the maximum area.
 // Formula used (numberOfBarsToTheLeft + numberOfBarsToTheRight + 1) * heightOfBar
+
+// Time complexity: O(n)
+// Space complexity: O(n)
 
 int largestRectangle(vector<int> &heights)
 {

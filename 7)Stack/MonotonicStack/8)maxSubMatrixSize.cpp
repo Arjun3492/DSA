@@ -11,6 +11,9 @@
 // While traversing each row, we calculate the histogram of each row
 // and pass the histogram to the largest area histogram function
 
+// Time complexity: O(n*m)
+// Space complexity: O(m)
+
 #include <bits/stdc++.h>
 
 // method to calculate largest area histogram

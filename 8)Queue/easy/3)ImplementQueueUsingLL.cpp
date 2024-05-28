@@ -14,6 +14,8 @@
 //          if front becomes NULL, update rear to NULL as well
 //          return the variable storing the data of the deleted node
 
+// Link : https://www.naukri.com/code360/problems/implement-queue-using-linked-list_8161235
+
 /**
  * Definition of linked list
  * class Node {

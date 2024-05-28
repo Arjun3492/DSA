@@ -1,11 +1,13 @@
-// Problem Statment: implement queue using stack
+// Problem Statment: Implement queue using stack
 // Queue: A Queue is a linear data structure that works on the basis of FIFO(First in First out).
 // This means the element added at first will be removed first from the Queue.
 
-// Solution
-// For the enQueue operation, we reverse the order of elements in mainStack by moving them to tempStack,
-// then push the new element onto mainStack, and finally move the elements back from tempStack to mainStack.
-// This ensures that the most recently enqueued element is placed at the bottom of mainStack.
+// Link : https://www.naukri.com/code360/problems/queue-using-stack_799482
+
+//  Solution
+//  For the enQueue operation, we reverse the order of elements in mainStack by moving them to tempStack,
+//  then push the new element onto mainStack, and finally move the elements back from tempStack to mainStack.
+//  This ensures that the most recently enqueued element is placed at the bottom of mainStack.
 #include <stack>
 
 class Queue
