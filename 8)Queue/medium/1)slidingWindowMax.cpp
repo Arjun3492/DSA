@@ -8,9 +8,13 @@
 // Example: nums = [1,3,-1,-3,5,3,6,7], k = 3
 // Output: [3,3,5,5,6,7]
 
+// Link : https://www.naukri.com/code360/problems/sliding-window-maximum_980226
+
 // Approach: Naive approach
 // Taking two pointers left and right,left pointing to the first element of the window and right pointing to the last element of the window.
 // We will find the maximum element in the window and push it to the vector.
+// Time complexity: O(n*k) , where n is the size of the array and k is the size of the window.
+// Space complexity: O(1) , as we are not using any extra space.
 
 vector<int> maxSlidingWindow(vector<int> &arr, int n, int k)
 {
