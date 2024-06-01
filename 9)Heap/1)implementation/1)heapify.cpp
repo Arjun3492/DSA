@@ -1,5 +1,10 @@
 // Heapify is a helper function that takes an index i and recursively moves the element at that index down the heap until it is in the correct position. The heapify function is called in the pop function to maintain the max heap property after the root is removed.
 
+// Approach:
+// - Compare the current element with its children.
+// - If the current element is smaller than any of its children, swap it with the largest child.
+// - Recursively apply the same process to the swapped child until the heap property is restored.
+
 void heapifyMaxHeap(int i)
 {
     int n = heap.size();

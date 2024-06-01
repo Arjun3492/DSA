@@ -1,8 +1,10 @@
 // Implementation of Heap pop operation with vector
 
-// Flow:
-//  Element is always popped from the root of the heap ,then the last element(last leaf node ) is placed at the root
-//  and then the heap is heapified again to maintain the max heap property
+// Approach:
+// - Replace the root element with the last element (last leaf node).
+// - Remove the last element from the heap.
+// - Apply heapify to the root to restore the heap property:
+//   - Move the root element down by swapping it with the larger of its children until the heap property is restored.
 
 int pop(vector<int> &heap)
 {

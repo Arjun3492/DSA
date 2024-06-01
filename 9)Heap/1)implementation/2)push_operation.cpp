@@ -1,8 +1,11 @@
 // Implementation of Heap push operation with vector
 
-// Flow:
-//  Element to be pushed is always added as a leaf node at the end of the heap
-//  Then the heap is heapified again to maintain the max heap property
+// Approach:
+// - Add the new element as a leaf node at the end of the heap (vector).
+// - Move the new element up to restore the heap property:
+//   - Compare the new element with its parent.
+//   - Swap if the new element is greater than the parent.
+//   - Repeat until the heap property is restored or the new element becomes the root.
 
 void push(vector<int> &heap, int value)
 {
