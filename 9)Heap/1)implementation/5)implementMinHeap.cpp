@@ -1,7 +1,15 @@
 //// Implement Min heap
-//// Min heap is a complete binary tree where the value of each node is less than or equal to the value of its parent
+//// Min heap is a complete binary tree where the value of each node is less
+// than or equal to the value of its parent
 
 // Link : https://www.naukri.com/code360/problems/min-heap-implementation_5480527
+
+// Approach:
+// - Use an array to represent the heap.
+// - Utilize the helper function `heapify` to maintain the min heap property:
+//   - For the push operation: Add the new element at the end and move it up to restore the heap property.
+//   - For the pop operation: Replace the root with the last element, remove the last element, and move the root element down to restore the heap property.
+
 #include <iostream>
 #include <vector>
 

@@ -1,5 +1,12 @@
 // Implement Max heap
-// Max heap is a complete binary tree where the value of each node is greater than or equal to the value of its parent
+// Max heap is a complete binary tree where the value of each node is greater than or equal
+// to the value of its parent
+
+// Approach:
+// - Use an array to represent the heap.
+// - Utilize the helper function `heapify` to maintain the max heap property:
+//   - For the push operation: Add the new element at the end and move it up to restore the heap property.
+//   - For the pop operation: Replace the root with the last element, remove the last element, and move the root element down to restore the heap property.
 
 class MaxHeap
 {
