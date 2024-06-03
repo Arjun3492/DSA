@@ -1,8 +1,14 @@
 // Problem statment:Convert min heap to max heap
-
+// Link : https://www.naukri.com/code360/problems/convert-min-heap-to-max-heap_1381084
 // Example:
 // Given min heap : [1,2,3,6,7,8]
 // Output max heap : [8,7,3,6,2,1]
+
+// Approach:
+// - Utilize the `heapifyMax` function to adjust the heap:
+//   - Start from the last non-leaf node and move upwards to the root.
+//   - For each node, ensure it satisfies the max heap property by swapping it with its largest child if necessary.
+//   - Recursively apply the `heapifyMax` function to restore the max heap property.
 
 void heapifyMax(int i, vector<int> &arr)
 {
