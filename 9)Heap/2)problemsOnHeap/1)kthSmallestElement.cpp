@@ -1,5 +1,8 @@
 // Kth smallest element
-//  Problem Statment: Given an array arr and an integer k find the kth smallest element from the array arr
+//  Problem Statment: Given an array arr and an integer k find the
+// kth smallest element from the array arr
+
+// Link : https://www.naukri.com/code360/problems/kth-smallest-element_893056
 
 // Example:
 //  Input: arr = [7,10,4,3,20,15]

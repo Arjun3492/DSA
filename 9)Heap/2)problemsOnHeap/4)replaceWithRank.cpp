@@ -2,13 +2,15 @@
 //  Given an array of integers, replace each element of the array with its corresponding rank in the array.
 // If two elements have the same value, their rank will be the same.
 
-// Example :
-// Input: arr[] = {10, 8, 15, 12, 6, 20, 1}
-// Output: arr[] = {4, 3, 6, 5, 2, 7, 1}
-// Explanation:
-// The element with value 10 has rank 4 as it is the 4th element of the array.
-// The element with value 8 has rank 3 as it is the 3rd element of the array.
-// and so on.
+// Link : https://www.naukri.com/code360/problems/replace-each-element-of-array-with-its-corresponding-rank_975384
+
+//  Example :
+//  Input: arr[] = {10, 8, 15, 12, 6, 20, 1}
+//  Output: arr[] = {4, 3, 6, 5, 2, 7, 1}
+//  Explanation:
+//  The element with value 10 has rank 4 as it is the 4th element of the array.
+//  The element with value 8 has rank 3 as it is the 3rd element of the array.
+//  and so on.
 
 // Approach 1: Brute Force
 // Time Complexity: O(n^2)

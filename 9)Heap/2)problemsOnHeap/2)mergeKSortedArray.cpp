@@ -1,7 +1,9 @@
 // Merge K sorted arrays
 // Problem Statement: Given k sorted arrays of size n each, merge them and return the sorted output.
 
-// Example:
+// Link : https://www.naukri.com/code360/problems/merge-k-sorted-arrays_975379
+
+//  Example:
 
 // Input:
 // K = 3, N =  4
@@ -17,7 +19,6 @@
 // Add all the elements to a single array and sort it
 
 // Approach 2: Using Min Heap
-typedef pair<int, pair<int, int>> ppi;
 // first element hold the value , second element hold the arrayIndex and third hold the valueIndex
 
 // we start with pushing the first element of each k array in min heap
@@ -27,6 +28,7 @@ typedef pair<int, pair<int, int>> ppi;
 // we repeat this process until the heap is empty
 // Time Complexity: O(nklogk)
 // Space Complexity: O(k)
+typedef pair<int, pair<int, int>> ppi;
 vector<int> mergeKSortedArrays(vector<vector<int>> &arr, int k)
 {
     priority_queue<ppi, vector<ppi>, greater<ppi>> minHeap;

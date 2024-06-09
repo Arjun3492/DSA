@@ -1,5 +1,13 @@
 // We will understand the memoization and tabulation approach of the fibonacci series
 
+// RECURSION
+//   Steps to convert a problem to reccurence
+//  1.Try to represent the problem in terms of indexes.
+//  2. Try all possible choices/ways at every index according to the problem statement.
+//  3. If the question states
+//  Count all the ways - return sum of all choices/ways.
+//  Find maximum/minimum- return the choice/way with maximum/minimum output.
+
 // Let us consider the example of the fibonacci series to understand the memoization and tabulation approach.
 
 // 1. Memoization is a top-down approach where we store the result of the subproblems in an array and use them when needed.
