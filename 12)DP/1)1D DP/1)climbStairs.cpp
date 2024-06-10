@@ -66,7 +66,12 @@ int countDistinctWays(int nStairs)
     return helperMemo(nStairs, memo);
 }
 
-// Tabulation
+// Tabulation Approach
+// We will create an array of size N+1 to store the number of ways to reach the ith stair.
+// We will initialize the 0th and 1st index with 1 as there is only one way to reach the 0th and 1st stair.
+// We will iterate from 2 to N and calculate the number of ways to reach the ith stair by adding the number of ways to reach the (i-1)th and (i-2)th stair.
+// Finally, we will return the number of ways to reach the Nth stair.
+
 int countDistinctWays(int nStairs)
 {
     int mod = 1e9 + 7;
@@ -85,6 +90,11 @@ int countDistinctWays(int nStairs)
 }
 
 // Tabulation Space optimization
+// We will create three variables to store the number of ways to reach the ith stair, (i-1)th stair, and (i-2)th stair.
+// We will initialize the 0th and 1st index with 1 as there is only one way to reach the 0th and 1st stair.
+// We will iterate from 2 to N and calculate the number of ways to reach the ith stair by adding the number of ways to reach the (i-1)th and (i-2)th stair.
+// Finally, we will return the number of ways to reach the Nth stair.
+
 int countDistinctWays(int nStairs)
 {
     int mod = 1e9 + 7;

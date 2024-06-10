@@ -74,6 +74,12 @@ int frogJump(int n, vector<int> &heights)
 }
 
 // TABULATION
+// Step 1: We will assume the stairs as indexes from 0 to N-1 for the heights array.
+// Step 2: We will create an array of size N to store the minimum energy required to reach the ith stair.
+// Step 3: We will initialize the 0th index with 0 as no energy is required to reach the 0th stair.
+// Step 4: We will iterate from 1 to N-1 and calculate the minimum energy required to reach the ith stair.
+// Step 5: The answer will be the minimum energy required to reach the N-1th stair.
+
 int frogJump(int n, vector<int> &heights)
 {
     vector<int> dp(n);
@@ -102,6 +108,12 @@ int frogJump(int n, vector<int> &heights)
 }
 
 // TABULATION SPACE OPTIMIZATION
+// Step 1: We will assume the stairs as indexes from 0 to N-1 for the heights array.
+// Step 2: We will use two variables to keep track of the last two computations.
+// Step 3: At any given stair i, the frog can jump either to (i+1) or (i+2).
+// Step 4: We will calculate the minimum energy required to reach the ith stair using the last two computations.
+// Step 5: The answer will be the minimum energy required to reach the N-1th stair.
+
 int frogJump(int n, vector<int> &heights)
 {
     // Two variables to keep track of the last two computations
