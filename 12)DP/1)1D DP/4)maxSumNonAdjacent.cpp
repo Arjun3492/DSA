@@ -13,6 +13,10 @@
 // Link : https://www.naukri.com/code360/problems/maximum-sum-of-non-adjacent-elements_843261
 
 // BASIC RECURSIVE APPROACH
+// We will consider two cases for each element in the array:
+// 1. If we take the element, then we cannot take the adjacent element.(move to i-2 index)
+// 2. If we do not take the element, then we can move to the adjacent element. (move to i-1 index)
+// This way we will consider all the possible subsequences and return the maximum sum.
 
 int helper(vector<int> &nums, int i)
 {
@@ -68,6 +72,13 @@ int maxSumNonAdjacent(vector<int> &nums)
 }
 
 // TABULATION
+// We will create a dp array of size n and initialize the first two elements of the dp array.
+// We will iterate from the 3rd element to the last element of the dp array.
+// For each element, we will consider two cases:
+// 1. If we take the element, then we cannot take the adjacent element.(move to i-2 index)
+// 2. If we do not take the element, then we can move to the adjacent element. (move to i-1 index)
+// We will store the maximum of the two cases in the dp array.
+// Finally, we will return the last element of the dp array.
 
 int maxSumNonAdjacent(vector<int> &nums)
 {
@@ -97,6 +108,14 @@ int maxSumNonAdjacent(vector<int> &nums)
 // Space complexity: O(n)
 
 // SPACE OPTIMIZED TABULATION
+// We can optimize the space complexity of the above approach by using two variables to store the previous two elements of the dp array.
+// We will initialize the first two elements of the dp array.
+// We will iterate from the 3rd element to the last element of the dp array.
+// For each element, we will consider two cases:
+// 1. If we take the element, then we cannot take the adjacent element.(move to i-2 index)
+// 2. If we do not take the element, then we can move to the adjacent element. (move to i-1 index)
+// We will store the maximum of the two cases in the dp array.
+// Finally, we will return the last element of the dp array.
 
 int maxSumNonAdjacent(vector<int> &nums)
 {

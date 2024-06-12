@@ -14,6 +14,11 @@
 
 // Link : https://www.naukri.com/code360/problems/house-robber_839733
 
+// RECURSIVE APPROACH
+//  We will consider two cases for each element in the array:
+//  We will use the last question solution to find max sum of non adjacent elements
+// To prevent robbering in first and last houses
+//  We will call the helper fn twice one on list without the first house and once with without  the last house
 #include <bits/stdc++.h>
 
 // Helper function to calculate the maximum amount of money Mr. X can rob tonight without alerting the police.
@@ -60,3 +65,72 @@ long long int houseRobber(vector<int> &valueInHouse)
     // Return the maximum amount of money Mr. X can rob tonight either by excluding the first house or the last house
     return max(helper(temp1), helper(temp2));
 }
+
+// Time complexity: O(n)
+// Space complexity: O(n)
+
+// TABULATION APPROACH
+// We will consider two cases for each element in the array:
+// 1. We will use the last question solution to find max sum of non adjacent elements
+// 2. To prevent robbering in first and last houses
+// We will call the helper fn twice one on list without the first house and once with without  the last house
+long long int houseRobber(vector<int> &valueInHouse)
+{
+    int n = valueInHouse.size();
+
+    if (n == 1)
+        return valueInHouse[0];
+
+    vector<int> dp1(n, 0);
+    vector<int> dp2(n, 0);
+
+    dp1[0] = valueInHouse[0];
+    dp1[1] = max(valueInHouse[0], valueInHouse[1]);
+
+    dp2[0] = valueInHouse[1];
+    dp2[1] = max(valueInHouse[1], valueInHouse[2]);
+
+    for (int i = 2; i < n; i++)
+    {
+        dp1[i] = max(dp1[i - 1], dp1[i - 2] + valueInHouse[i]);
+        dp2[i] = max(dp2[i - 1], dp2[i - 2] + valueInHouse[i]);
+    }
+
+    return max(dp1[n - 2], dp2[n - 1]);
+}
+
+// Time complexity: O(n)
+// Space complexity: O(n)
+
+// SPACE OPTIMIZED TABULATION
+// We will consider two cases for each element in the array:
+// 1. We will use the last question solution to find max sum of non adjacent elements
+// 2. To prevent robbering in first and last houses
+// We will call the helper fn twice one on list without the first house and once with without  the last house
+long long int houseRobber(vector<int> &valueInHouse)
+{
+    int n = valueInHouse.size();
+
+    if (n == 1)
+        return valueInHouse[0];
+
+    int prev2 = 0;
+    int prev1 = valueInHouse[0];
+
+    for (int i = 1; i < n; i++)
+    {
+        int take_idx = valueInHouse[i];
+        if (i > 1)
+            take_idx += prev2;
+
+        int not_take_idx = prev1;
+
+        prev2 = prev1;
+        prev1 = max(take_idx, not_take_idx);
+    }
+
+    return prev1;
+}
+
+// Time complexity: O(n)
+// Space complexity: O(1)
