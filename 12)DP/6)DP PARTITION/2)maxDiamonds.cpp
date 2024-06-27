@@ -12,6 +12,8 @@
 
 // I.E. The cost of mining the ith diamond is A[i-1]*A[i]*A[i+1].
 
+// Link : https://www.naukri.com/code360/problems/mining-diamonds_4244494
+
 // Approach
 //  1. Start with the entire block/array and mark it with i,j. We need to find the value of f(i,j).
 //  2. Run a loop to try all partitions. (Place partition between i and j)
