@@ -48,7 +48,7 @@ vector<int> nextGreaterPermutation(vector<int> &A)
     }
 
     // Step2:Find the number which is just greater than the number at break-point
-    // since numbers on the right side of break-point are in ascending order
+    // since numbers on the right side of break-point are in descending order
     // we will loop from the back and find the first number greater than the number at break-point
     // and swap the two numbers
     for (int i = n - 1; i > pivot; i--)

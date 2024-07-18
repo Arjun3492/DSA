@@ -20,7 +20,8 @@ vector<int> sieveOfEratosthenes(int n)
         {
             ans.push_back(i);
             for (int j = i * i; j <= n; j += i)
-            // we are starting from i*i because all the numbers before that will already be marked by their factors which are less than i
+            // we are starting from i*i because all the numbers before that will already be marked by the factors of num which are less than i
+            // Eg: for 5, 2*5,3*5,4*5 will already be marked by 2,3,4 respectively
             {
                 isPrime[j] = true;
             }

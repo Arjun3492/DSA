@@ -2,8 +2,8 @@
 // Problem Statement: Given a Matrix, print the given matrix in spiral order.
 
 // Create 4 pointers ,top,bottom,left and right
-// Initialise top=0,bottom=noOfRows-1,left=0,right=noOfColumns=1;
-// Step 1: print left to right from top then decrement top
+// Initialise top=0,bottom=noOfRows-1,left=0,right=noOfColumns-1;
+// Step 1: print left to right from top then increment top
 // Step 2: print top to bottom from right then decrement right
 // Step 3: print right to left from bottom then decrement bottom
 // Step 4: print bottom to top from left then increment left

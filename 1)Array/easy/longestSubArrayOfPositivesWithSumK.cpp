@@ -4,13 +4,8 @@
 // Brute force approach
 // TC: O(n^2)
 // SC: O(1)
-
-// Hashing approach wherein,we would store the sum till the current index
-// in a mapping of sum to index , and check if "sum-k" exists in map,
-// if yes then we'd strip that subarray from the current subarray
 int getLongestSubarray(vector<int> &nums, int k)
 {
-  // Write your code here
   // Brute force computing all subarrays
   int n = nums.size();
   int maxLen = 0;
@@ -33,6 +28,44 @@ int getLongestSubarray(vector<int> &nums, int k)
   }
   return maxLen;
 }
+
+// Hashing approach
+//  wherein,we would store the sum till the current index
+//  in a mapping of sum to index , and check if "sum-k" exists in map,
+//  if yes then we'd strip that subarray from the current subarray
+//  TC: O(n)
+//  SC: O(n)
+
+int longestSubarrayWithSumK(vector<int> a, long long k)
+{
+  int n = a.size();
+  unordered_map<long long, int> mp;
+  long long sum = 0;
+  int maxLen = 0;
+  for (int i = 0; i < n; i++)
+  {
+    sum += a[i];
+    // If sum == k, then we can update the max length
+    if (sum == k)
+    {
+      maxLen = i + 1;
+    }
+
+    // If sum-k exists in map, then we can strip that subarray from the current subarray
+    if (mp.find(sum - k) != mp.end())
+    {
+      maxLen = max(maxLen, i - mp[sum - k]);
+    }
+
+    // Since we want the greatest length, we are storing the first occurence of sum in map
+    if (mp.find(sum) == mp.end())
+    {
+      mp[sum] = i;
+    }
+  }
+  return maxLen;
+}
+
 // Opimal Approach
 // TC: O(n)
 // SC: O(n)
@@ -48,7 +81,6 @@ int longestSubarrayWithSumK(vector<int> a, long long k)
   while (right < n)
   {
     sum += a[right];
-    ;
     while (sum > k && left <= right)
     {
       sum -= a[left];
