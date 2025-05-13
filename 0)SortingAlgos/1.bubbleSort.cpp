@@ -1,5 +1,5 @@
 // Intuition : In each iteration we place the current largest element at its correct position towards the right
-//  by comparision are swapping with adjacent elements
+//  by comparision and swapping with adjacent elements
 
 // TC : O(n^2)
 // SC : O(n)

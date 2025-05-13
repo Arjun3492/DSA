@@ -130,7 +130,3 @@ ListNode* findMiddle(ListNode* head) {
 ### 🔴 Hard
 - [Leetcode 287](https://leetcode.com/problems/find-the-duplicate-number/) – Find the Duplicate Number (Cycle in array)
 - [Leetcode 457](https://leetcode.com/problems/circular-array-loop/) – Circular Array Loop
-
----
-
-Want to work through one of these problems interactively or move to another pattern like **Binary Search on Answer** or **Backtracking**?
