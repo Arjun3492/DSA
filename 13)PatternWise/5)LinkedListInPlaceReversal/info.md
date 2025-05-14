@@ -77,9 +77,45 @@ ListNode* reverseList(ListNode* head) {
 ### ✅ Template 2: Reverse a Sublist Between Positions `left` and `right`
 
 ```cpp
-ListNode* reverseBetween(ListNode* head, int left, int right) {
+// Function to reverse the sublist using Template 1
+ListNode* reverseBetween1(ListNode* head, int left, int right) {
     if (!head || left == right) return head;
 
+    // Create a dummy node to handle edge cases where left == 1
+    // Dummy node will handle edge case where reversal starts from 1(i.e. head), so dummy node will preserve pointing to the new head
+    ListNode* dummy = new ListNode(0);
+    dummy->next = head;
+    ListNode* prev = dummy;
+
+    // Step 1: Reach the node before 'left'
+    for (int i = 1; i < left; ++i) {
+        prev = prev->next;
+    }
+
+    // Step 2: Start reversing the sublist
+    ListNode* curr = prev->next;
+    ListNode* next = nullptr;
+    ListNode* prevSub = nullptr;
+
+    for (int i = 0; i <= right - left; ++i) {
+        next = curr->next;
+        curr->next = prevSub;
+        prevSub = curr;
+        curr = next;
+    }
+
+    // Step 3: Reconnect the reversed sublist back to the main list
+    prev->next->next = curr;   // tail of reversed sublist points to remaining list
+    prev->next = prevSub;      // node before 'left' points to new head of reversed sublist
+
+    return dummy->next;
+}
+
+// In this in each iteration we move curr one place right and bring the "next" to the front
+ListNode* reverseBetween2(ListNode* head, int left, int right) {
+    if (!head || left == right) return head;
+
+    //Making a dummy node to handle edge case where reversal starts from 1(i.e. head), so dummy node will preserve pointing to the new head
     ListNode dummy(0);
     dummy.next = head;
     ListNode* prev = &dummy;
@@ -91,8 +127,11 @@ ListNode* reverseBetween(ListNode* head, int left, int right) {
     ListNode* curr = prev->next;
     for (int i = 0; i < right - left; i++) {
         ListNode* next = curr->next;
-        curr->next = next->next;
+        // moving curr one place to right
+        curr->next = next->next; 
+        // pointing next to the front
         next->next = prev->next;
+        // marking the new front 
         prev->next = next;
     }
 
