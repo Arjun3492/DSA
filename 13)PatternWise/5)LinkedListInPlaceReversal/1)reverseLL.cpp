@@ -31,6 +31,7 @@ private:
             curr = curr->next;
         }
 
+        // new head
         head = st.top();
         st.pop();
         curr = head;

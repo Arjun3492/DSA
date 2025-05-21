@@ -54,47 +54,61 @@ Maintain a **monotonic increasing or decreasing stack** of **indices** (not valu
 
 ---
 
-### ✅ Template: Next Greater Element (Monotonic Decreasing Stack)
+## Note:
+
+**For previous greater / smaller element we need to traverse the array from left to right**
+
+**For next greater / smaller element we need to traverse the array from right to left**
+
+___
+
+## Usage
+
+### For previous / next smaller use a decreasing monotonic stack
 
 ```cpp
-vector<int> nextGreaterElements(vector<int>& nums) {
-    int n = nums.size();
-    vector<int> res(n, -1);
-    stack<int> st; // stores indices
+// decreasing monotonic stack for next / previous smaller element
+for (int i = 0; i < n; i++) {
+    //previous smaller element
+              while(!s1.empty() && nums[s1.top()]>=nums[i]){
+                s1.pop();
+            }
+            if(!s1.empty())cout<<"The previous smaller element of "<<nums[i]<<"is"<<  nums[s1.top()];
+            s1.push(i);
+  }
 
-    for (int i = 0; i < n; i++) {
-        while (!st.empty() && nums[i] > nums[st.top()]) {
-            res[st.top()] = nums[i];
-            st.pop();
-        }
-        st.push(i);
-    }
-
-    return res;
-}
+for (int i = n-1; i >=0; i--) {
+    //next smaller element
+              while(!s2.empty() && nums[s2.top()]>=nums[i]){
+                s2.pop();
+            }
+            if(!s2.empty())cout<<"The next smaller element of "<<nums[i]<<"is"<<  nums[s2.top()];
+            s2.push(i);
+  }
 ```
 
----
-
-### ✅ Template: Previous Smaller Element (Monotonic Increasing Stack)
+### For next / previous greater use a increasing monotonic stack
 
 ```cpp
-vector<int> prevSmallerElements(vector<int>& nums) {
-    int n = nums.size();
-    vector<int> res(n, -1);
-    stack<int> st;
 
-    for (int i = 0; i < n; i++) {
-        while (!st.empty() && nums[st.top()] >= nums[i]) {
-            st.pop();
-        }
+// increasing monotonic stack for next greater element / previous greater element
+for (int i = 0; i < n; i++) {
+    //previous greater element
+              while(!s1.empty() && nums[s1.top()]<=nums[i]){
+                s1.pop();
+            }
+            if(!s1.empty())cout<<"The previous greater element of "<<nums[i]<<"is"<<  nums[s1.top()];
+            s1.push(i);
+  }
 
-        if (!st.empty()) res[i] = nums[st.top()];
-        st.push(i);
-    }
-
-    return res;
-}
+for (int i = n-1; i >=0; i--) {
+    //next greater element
+              while(!s2.empty() && nums[s2.top()]<=nums[i]){
+                s2.pop();
+            }
+            if(!s2.empty())cout<<"The next greater element of "<<nums[i]<<"is"<<  nums[s2.top()];
+            s2.push(i);
+  }
 ```
 
 ---
