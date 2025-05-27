@@ -116,6 +116,27 @@ for (int i = n-1; i >=0; i--) {
 ### ✅ Template: Largest Rectangle in Histogram
 
 ```cpp
+/*
+We go through the histogram from left to right, keeping a monotonic increasing stack of indices — that means the heights of the bars at those indices are always in increasing order.
+
+For each new bar we look at:
+
+
+If it's shorter than the bar on top of the stack, then:
+
+This new bar is the "next smaller" bar for the one at the top.
+
+So we pop the top bar, and:
+
+The bar now at the top of the stack (after popping) is the "previous smaller" for the bar we just removed.
+
+With both previous and next smaller bars known, we can calculate the maximum rectangle area for the popped bar.
+
+Push the current bar index onto the stack.
+
+We also add a 0 at the end of the list as a sentinel.
+This ensures that all bars in the stack get processed(popped), even if the histogram ends with increasing heights.
+*/
 int largestRectangleArea(vector<int>& heights) {
     heights.push_back(0); // sentinel
     stack<int> st;
