@@ -155,5 +155,4 @@ Helper function `canShip` would simulate the shipping to check feasibility.
 ### 🔴 Hard
 - [Leetcode 410](https://leetcode.com/problems/split-array-largest-sum/) – Split Array Largest Sum
 - [Leetcode 154](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/) – Min in Rotated Sorted Array II (with duplicates)
-- [Leetcode 1095](https://leetcode.com/problems/find-in-mountain-array/) – Find in Mountain Array
 
