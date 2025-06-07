@@ -7,9 +7,9 @@
 - You need to search for:
   - A specific element in a **rotated sorted array**
   - **First/last occurrence** of a target (handling duplicates)
-  - **Boundary conditions** (e.g., floor/ceil of a number)
-  - **Peak elements**, or **min/max in valleys/mountains**
+  - **Boundary conditions** (e.g., floor/ceil of a number) OR **Peak elements**, or **min/max in valleys/mountains**
   - Problems that say: “find the minimum value that satisfies a condition” → also called **Binary Search on the Answer**
+  - Minimize max value or Maximize Min Value of partitions
 
 ### 🧠 Keywords to look for:
 - “Rotated sorted array”
@@ -19,6 +19,8 @@
 - “Peak element”
 - “Search a value in mountain/valley array”
 - “Binary Search + condition”
+- "Minimize the largest"
+- "Maximize the smallest"
 
 ---
 
