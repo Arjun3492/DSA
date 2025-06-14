@@ -1,3 +1,6 @@
+// 643. Maximum Average Subarray I
+// https://leetcode.com/problems/maximum-average-subarray-i
+
 class Solution
 {
 private:
@@ -27,7 +30,7 @@ private:
         return maxAvg;
     }
 
-    // Optimal approach using Sliding Window technique
+    // Optimal approach using Fixed Sliding Window technique
     // Time Complexity: O(n), where n = size of nums
     // Space Complexity: O(1), as no extra space is used
     double optimal(vector<int> &nums, int k)

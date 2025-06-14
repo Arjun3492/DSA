@@ -62,11 +62,6 @@ bool hasPairWithSum(vector<int>& nums, int target) {
     return false;
 }
 ```
-
-### 🧠 Variations:
-- `left` and `right` can start from both ends (e.g., pair sum in sorted array)
-- Or both can start at beginning (e.g., sliding window, fast/slow pointers)
-
 ---
 
 ## 📚 4. Common Problems Based on Two Pointer Pattern

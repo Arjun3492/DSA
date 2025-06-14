@@ -1,4 +1,4 @@
-# Top ‘K’ Elements Pattern
+# Top ‘K’ Elements Pattern (Priority Queue)
 
 ## 🔍 1. When Should Top ‘K’ Elements Pattern Be Used?
 

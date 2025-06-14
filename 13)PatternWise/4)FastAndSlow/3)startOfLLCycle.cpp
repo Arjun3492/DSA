@@ -8,6 +8,7 @@
  *   ListNode(int x) : val(x), next(NULL) {}
  *};
  */
+
 class Solution
 {
 
@@ -30,6 +31,19 @@ private:
 
     // TC:O(n)
     // SC:O(1)
+    //- Logic :
+    // Let:
+    // a = distance from head to start of cycle
+    // b = distance from cycle start to meeting point
+    // c = cycle length
+    // Total distance by slow = a + b
+    // Fast moves twice as fast: 2(a + b) = a + b + k * c → a + b = k * c
+    // ➡️ So, a = c - b
+    // Now reset slow to head, keep fast at meeting point.
+    // Move both 1 step at a time:
+    // slow moves a steps
+    // fast moves c - b steps
+    // Since a = c - b, they meet at the start of the cycle. ✅
     ListNode *optimal(ListNode *head)
     {
         ListNode *slow = head, *fast = head;

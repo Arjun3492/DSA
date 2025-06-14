@@ -88,7 +88,7 @@ int getRangeSum(const vector<int>& prefix, int L, int R) {
 
 * Keep a running prefix sum or custom metric (e.g., odd count).
 * Use a map to store **frequency of previously seen prefix sums**.
-* At each step, check if `(curr_prefix - target)` exists in map → that gives count of valid subarrays ending at current index.
+* At each step, check if `target = (curr_prefix - k)` exists in map → that gives count of valid subarrays ending at current index.
 
 ---
 
@@ -105,8 +105,9 @@ int countSubarraysWithCondition(vector<int>& nums, int k) {
         // Modify prefixSum logic here as per condition
         prefixSum += num;
 
-        // Check if subarray with sum = k exists
-        if (prefixFreq.find(prefixSum - k) != prefixFreq.end()) {
+        // Check if subarray with target exists
+        int target = prefixSum - k;
+        if (prefixFreq.find() != prefixFreq.end()) {
             count += prefixFreq[prefixSum - k];
         }
 

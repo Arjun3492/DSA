@@ -5,9 +5,9 @@
 ### ✅ Use this pattern when:
 - You need to find:
   - **Next Greater Element (NGE)**
-  - **Previous Smaller Element (PSE)**
   - **Next Smaller Element (NSE)**
   - **Previous Greater Element (PGE)**
+  - **Previous Smaller Element (PSE)**
 - You’re asked for **span**, **ranges**, or **distances** in arrays.
 - You’re dealing with problems that involve **heights**, **temperatures**, or **prices**, often in **1D array** form.
 
@@ -117,7 +117,7 @@ for (int i = n-1; i >=0; i--) {
 
 ```cpp
 /*
-We go through the histogram from left to right, keeping a monotonic increasing stack of indices — that means the heights of the bars at those indices are always in increasing order.
+We go through the histogram from left to right, keeping a monotonic decreasing stack of indices — that means the heights of the bars at those indices are always in increasing order.
 
 For each new bar we look at:
 
@@ -144,9 +144,16 @@ int largestRectangleArea(vector<int>& heights) {
 
     for (int i = 0; i < heights.size(); i++) {
         while (!st.empty() && heights[i] < heights[st.top()]) {
+            //bar to be processed
             int h = heights[st.top()];
+            
             st.pop();
-            int width = st.empty() ? i : i - st.top() - 1;
+            //Next smaller of the bar to be processed
+            int nextSmaller = i;
+
+            // Previous Smaller of the bar to be processed 
+            int prevSmaller = st.empty()? 0 :st.top();
+            int width = nextSmaller-prevSmaller-1;
             maxArea = max(maxArea, h * width);
         }
         st.push(i);

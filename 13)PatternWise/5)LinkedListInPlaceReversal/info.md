@@ -23,23 +23,24 @@
 
 ```cpp
 ListNode* reverseList(ListNode* head) {
-    stack<ListNode*> s;
+    stack<int> s;
+    //Storing the node data in stack
     ListNode* curr = head;
     while (curr) {
-        s.push(curr);
+        s.push(curr->data);
         curr = curr->next;
     }
 
-    ListNode dummy(0);
-    ListNode* tail = &dummy;
+    //Resetting curr to head 
+    ListNode curr = head;
     while (!s.empty()) {
-        tail->next = s.top();
+        //overwriting the nodes data using the stack enteries
+        curr->data = s.top();
         s.pop();
-        tail = tail->next;
+        curr = curr->next;
     }
-    tail->next = nullptr;
 
-    return dummy.next;
+    return curr;
 }
 ```
 
@@ -82,7 +83,7 @@ ListNode* reverseBetween1(ListNode* head, int left, int right) {
     if (!head || left == right) return head;
 
     // Create a dummy node to handle edge cases where left == 1
-    // Dummy node will handle edge case where reversal starts from 1(i.e. head), so dummy node will preserve pointing to the new head
+    // Dummy node helps preserve a pointer to the new head when reversal starts from the head
     ListNode* dummy = new ListNode(0);
     dummy->next = head;
     ListNode* prev = dummy;
@@ -105,8 +106,8 @@ ListNode* reverseBetween1(ListNode* head, int left, int right) {
     }
 
     // Step 3: Reconnect the reversed sublist back to the main list
-    prev->next->next = curr;   // tail of reversed sublist points to remaining list
-    prev->next = prevSub;      // node before 'left' points to new head of reversed sublist
+    prev->next->next = curr;   // next node to prev(now at tail of reverse part) points to remaining ll
+    prev->next = prevSub;      // updating the next node of prev to head of reversed LL
 
     return dummy->next;
 }
@@ -116,10 +117,11 @@ ListNode* reverseBetween2(ListNode* head, int left, int right) {
     if (!head || left == right) return head;
 
     //Making a dummy node to handle edge case where reversal starts from 1(i.e. head), so dummy node will preserve pointing to the new head
-    ListNode dummy(0);
-    dummy.next = head;
-    ListNode* prev = &dummy;
+    ListNode* dummy = new ListNode(0);
+    dummy->next = head;
+    ListNode* prev = dummy;
 
+    //Traverse to before the start of reversal
     for (int i = 1; i < left; i++) {
         prev = prev->next;
     }
