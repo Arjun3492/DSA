@@ -657,3 +657,330 @@ vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
 }
 
 ```
+## 8. Binary Search Technique
+
+When to Use Binary Search
+1. **Sorted Array Problems**: Find element in rotated sorted array
+2. **Boundary Problems**: First/Last occurrence of target in sorted search space
+3. **Peak Finding**: Boundary elements (Floor/Ceil/Peak) in mountain arrays
+4. **Optimization Problems**: Minimum/maximum solution to a problem
+5. **Partition Problems**: Minimize max value or maximize min value of partitions
+
+
+### 8.1: Element in Rotated Sorted Array
+
+```cpp
+/*
+### Problem
+Find a target element in a rotated sorted array (e.g., `[4,5,6,7,0,1,2]`).
+
+### Intuition
+Even though the array is rotated, at least one half of the array around the mid point will always be sorted. We can determine which half is sorted and check if our target lies in that sorted half.
+
+### Key Insight
+- If `nums[left] <= nums[mid]`: Left half is sorted
+- Otherwise: Right half is sorted
+- Check if target lies in the sorted half, then adjust search bounds accordingly
+
+
+**Time Complexity**: O(log n)  
+**Space Complexity**: O(1)
+*/
+int searchInRotatedArray(vector<int> &nums, int target) {
+    int left = 0, right = nums.size() - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        // Found the target
+        if (nums[mid] == target) {
+            return mid;
+        }
+
+        // Check if left half is sorted
+        // Example: [2, 3, 4, 5, 6, 7, 0, 1] where mid points to 5
+        if (nums[left] <= nums[mid]) {
+            // Target is in the sorted left half
+            if (nums[left] <= target && target < nums[mid]) {
+                right = mid - 1;  // Search left half
+            } else {
+                left = mid + 1;   // Search right half
+            }
+        }
+        // Right half is sorted
+        // Example: [6, 7, 0, 1, 2, 3, 4, 5] where mid points to 2
+        else {
+            // Target is in the sorted right half
+            if (nums[mid] < target && target <= nums[right]) {
+                left = mid + 1;   // Search right half
+            } else {
+                right = mid - 1;  // Search left half
+            }
+        }
+    }
+    
+    return -1;  // Target not found
+}
+```
+
+
+
+---
+
+### 8.2: First/Last Occurrence of Target
+
+
+```cpp
+
+/*
+### Problem
+Find the first or last occurrence of a target element in a sorted array with duplicates.
+
+### Intuition
+When we find the target, we don't stop immediately. Instead, we continue searching in the direction we want (left for first occurrence, right for last occurrence) to find the boundary.
+
+### Key Insight
+- For **first occurrence**: When target is found, continue searching left (`right = mid - 1`)
+- For **last occurrence**: When target is found, continue searching right (`left = mid + 1`)
+
+
+**Time Complexity**: O(log n)  
+**Space Complexity**: O(1)
+*/
+int findFirstOccurrence(vector<int> &nums, int target) {
+    int left = 0, right = nums.size() - 1;
+    int result = -1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        if (nums[mid] == target) {
+            result = mid;           // Potential answer
+            right = mid - 1;        // Continue searching left for first occurrence
+        } 
+        else if (target < nums[mid]) {
+            right = mid - 1;
+        } 
+        else {
+            left = mid + 1;
+        }
+    }
+    
+    return result;
+}
+
+int findLastOccurrence(vector<int> &nums, int target) {
+    int left = 0, right = nums.size() - 1;
+    int result = -1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        if (nums[mid] == target) {
+            result = mid;           // Potential answer
+            left = mid + 1;         // Continue searching right for last occurrence
+        } 
+        else if (target < nums[mid]) {
+            right = mid - 1;
+        } 
+        else {
+            left = mid + 1;
+        }
+    }
+    
+    return result;
+}
+```
+
+---
+
+### 8.3: Find Peak Element
+
+```cpp
+/*
+
+### Problem
+Find a peak element in an array where `nums[i] > nums[i-1]` and `nums[i] > nums[i+1]`.
+
+### Intuition
+Think of the array as a mountain landscape. If we're at a point where the next element is smaller, we're on a descending slope, so a peak must exist to our left. If the next element is larger, we're on an ascending slope, so a peak must exist to our right.
+
+### Key Insight
+- If `nums[mid] > nums[mid + 1]`: We're on descending slope → peak is in left half (including mid)
+- If `nums[mid] < nums[mid + 1]`: We're on ascending slope → peak is in right half (excluding mid)
+
+**Time Complexity**: O(log n)  
+**Space Complexity**: O(1)
+
+*/
+int findPeakElement(vector<int> &nums) {
+    int left = 0, right = nums.size() - 1;
+
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+
+        // Compare mid with next element to determine slope direction
+        if (nums[mid] > nums[mid + 1]) {
+            // Descending slope: peak is to the left (including mid)
+            right = mid;
+        } else {
+            // Ascending slope: peak is to the right (excluding mid)
+            left = mid + 1;
+        }
+    }
+
+    // When left == right, we've found the peak
+    return left;
+}
+```
+
+### 8.4: Minimum/Maximum Solution (Capacity Problems)
+
+
+```cpp
+/*
+### Problem
+Find the minimum capacity needed to complete a task within given constraints.
+
+### Example: Ship Packages Within D Days
+Find minimum weight capacity of ship to ship all packages within D days.
+
+### Intuition
+We can binary search on the answer space (capacity). The minimum possible capacity is the weight of the heaviest package (can't split packages). The maximum possible capacity is the sum of all weights (ship everything in one day).
+
+### Key Insight
+- **Lower bound**: Maximum single package weight
+- **Upper bound**: Sum of all package weights  
+- For each mid capacity, check if it's possible to ship within D days
+- If possible, try smaller capacity; otherwise, increase capacity
+
+
+**Time Complexity**: O(n * log(sum of weights))  
+**Space Complexity**: O(1)
+*/
+// Helper function: Check if we can ship all packages within D days with given capacity
+bool canShipWithCapacity(vector<int> &weights, int capacity, int days) {
+    int currentWeight = 0;
+    int daysNeeded = 1;
+    
+    for (int weight : weights) {
+        // If adding current package exceeds capacity, ship on next day
+        if (currentWeight + weight > capacity) {
+            daysNeeded++;
+            currentWeight = weight;  // Start new day with current package
+            
+            // If we exceed allowed days, this capacity is insufficient
+            if (daysNeeded > days) {
+                return false;
+            }
+        } else {
+            currentWeight += weight;
+        }
+    }
+    
+    return true;
+}
+
+int shipWithinDays(vector<int> &weights, int days) {
+    // Set search bounds
+    int left = *max_element(weights.begin(), weights.end());    // Min capacity
+    int right = accumulate(weights.begin(), weights.end(), 0);  // Max capacity
+
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        
+        if (canShipWithCapacity(weights, mid, days)) {
+            right = mid;        // This capacity works, try smaller
+        } else {
+            left = mid + 1;     // This capacity insufficient, need larger
+        }
+    }
+    
+    return left;  // Minimum sufficient capacity
+}
+```
+
+
+---
+
+### 8.5: Minimize Max or Maximize Min (Binary search on answer space)
+
+```cpp
+/*
+
+
+### Problem
+Split array into K subarrays to minimize the maximum sum among all subarrays.
+
+### Examples
+- Split Array Largest Sum
+- Painter Partition Problem  
+- Book Allocation Problem
+
+### Intuition
+We binary search on the answer (maximum subarray sum). For each potential maximum sum, we check if it's possible to split the array into at most K subarrays where each subarray sum ≤ maximum sum.
+
+### Key Insight
+- **Lower bound**: Maximum single element (each element must be in some subarray)
+- **Upper bound**: Sum of all elements (entire array as one subarray)
+- **Monotonic property**: If we can split with max sum X, we can also split with max sum > X
+- As maximum allowed sum decreases, number of required partitions increases
+
+
+**Time Complexity**: O(n * log(sum of array))  
+**Space Complexity**: O(1)
+*/
+// Helper: Count minimum partitions needed for given maximum subarray sum
+int getMinPartitions(vector<int> &nums, int maxSum) {
+    int currentSum = 0;
+    int partitions = 1;
+    
+    for (int num : nums) {
+        // Try to add current number to current partition
+        if (currentSum + num <= maxSum) {
+            currentSum += num;
+        } else {
+            // Current number doesn't fit, start new partition
+            partitions++;
+            currentSum = num;
+        }
+    }
+    
+    return partitions;
+}
+
+// Get the valid range for binary search
+pair<int, int> getSearchBounds(vector<int> &nums) {
+    // Lower bound: Maximum single element
+    // (Each subarray must contain at least one element)
+    int lowerBound = *max_element(nums.begin(), nums.end());
+    
+    // Upper bound: Sum of all elements  
+    // (Entire array as single subarray)
+    int upperBound = accumulate(nums.begin(), nums.end(), 0);
+    
+    return {lowerBound, upperBound};
+}
+
+int splitArrayMinimizeMax(vector<int> &nums, int k) {
+    //Getting the bounds for answer space
+    auto [left, right] = getSearchBounds(nums);
+    
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        int partitionsNeeded = getMinPartitions(nums, mid);
+        
+        if (partitionsNeeded <= k) {
+            // We can split with this max sum using ≤ k partitions
+            // Try to minimize further
+            right = mid;
+        } else {
+            // Need more than k partitions with this max sum
+            // Increase the allowed maximum sum
+            left = mid + 1;
+        }
+    }
+    
+    return left;  // Minimum possible maximum subarray sum
+}
+```

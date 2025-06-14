@@ -17,6 +17,7 @@ private:
                 return mid;
 
             // In left sorted part
+            // Eg 2 3(mid) 4 1
             if (nums[left] <= nums[mid])
             {
                 // if num lies in left sorted part
@@ -30,6 +31,7 @@ private:
                 }
             }
             // In right sorted part
+            // Eg : 4 1(mid) 2 3
             else
             {
                 // target is in right sorted part

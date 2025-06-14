@@ -58,7 +58,7 @@ private:
         return -1;
     }
 
-    // Using BS algo to redice the search space to find the min possible capacity
+    // Using BS algo to reduce the search space to find the min possible capacity
     int optimal(vector<int> &w, int d)
     {
 

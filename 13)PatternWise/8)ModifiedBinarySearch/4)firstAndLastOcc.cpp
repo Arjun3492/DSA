@@ -16,7 +16,7 @@ private:
             if (nums[m] == target)
             {
                 // could be ans, but keep looking towards left
-                // as we need the first occurence of target
+                // as we need the first occurrence of target
                 ans = m;
                 e = m - 1;
             }
