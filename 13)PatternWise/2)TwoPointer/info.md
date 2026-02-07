@@ -79,7 +79,3 @@ bool hasPairWithSum(vector<int>& nums, int target) {
 ### 🔴 Hard
 - [Leetcode 42](https://leetcode.com/problems/trapping-rain-water/) – Trapping Rain Water
 - [Leetcode 76](https://leetcode.com/problems/minimum-window-substring/) – Minimum Window Substring (uses two pointers + hashmap)
-
----
-
-Would you like to walk through a Two Pointer problem together (step-by-step), or jump to the next pattern like **Sliding Window** or **Fast & Slow Pointers**?

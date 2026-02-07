@@ -8,7 +8,7 @@
 
 * You need to **compute the sum of elements in a range \[L, R]** in an array repeatedly.
 * The problem involves **subarrays** and **you’re being asked about sum, average, or count of elements in a range**.
-* You need to find **number of subarrays** matching a given condition (like sum == k or k odd elements).
+* You need to find **number of subarrays** or **longest/smallest subarray** matching a given condition (like sum == k or divisible by k).
 
 ### 🧠 Keywords to watch for in a problem:
 
@@ -34,7 +34,7 @@ int rangeSum(vector<int>& nums, int L, int R) {
 
 ### ⛔ Time Complexity:
 
-* O(n) per query (or O(n²) total if many queries)
+* O(n) per query (or O(n²) total if n queries)
 
 ---
 
@@ -45,7 +45,7 @@ int rangeSum(vector<int>& nums, int L, int R) {
 You pre-compute an array `prefix[]` where:
 
 ```
-prefix[i] = sum of elements from nums[0] to nums[i-1]
+prefix[i] = sum of elements from nums[0] to nums[i]
 ```
 
 Then, you can calculate any range sum `nums[L..R]` as:
@@ -97,7 +97,7 @@ int getRangeSum(const vector<int>& prefix, int L, int R) {
 ```cpp
 int countSubarraysWithCondition(vector<int>& nums, int k) {
     unordered_map<int, int> prefixFreq;
-    prefixFreq[0] = 1; // base case: 1 way to have prefix sum = 0
+    //prefixFreq[0] = 1; // Edge case: 1 way to have prefix sum = 0
     int count = 0;
     int prefixSum = 0;
 
@@ -105,10 +105,13 @@ int countSubarraysWithCondition(vector<int>& nums, int k) {
         // Modify prefixSum logic here as per condition
         prefixSum += num;
 
+        //Edge case: while computing the running prefix sum if it becomes equal to target then increase count (alternate of line 100)
+        if(prefixSum == k) count++;
+
         // Check if subarray with target exists
         int target = prefixSum - k;
-        if (prefixFreq.find() != prefixFreq.end()) {
-            count += prefixFreq[prefixSum - k];
+        if (prefixFreq.find(target) != prefixFreq.end()) {
+            count += prefixFreq[target];
         }
 
         // Record current prefixSum

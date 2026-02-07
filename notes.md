@@ -25,21 +25,30 @@ int rangeSum(const vector<int>& prefix, int l, int r) {
 }
 ```
 
+##### QUESTIONS: 
+* ⬜ **Range Sum Query - Immutable**
+  🔗 [https://leetcode.com/problems/range-sum-query-immutable/description/](https://leetcode.com/problems/range-sum-query-immutable/description/)
+  🧠 Insight: We precompute the prefixSum array and then use it to return prefix between two indices
+
 ### 1.2 Prefix Sum with HashMap (Target Strategy)
-Used to find count of subarrays satisfying a given condition (e.g., count of subarray with sum = k or with k odd elements).
+Used to find count of subarrays satisfying a given condition (e.g., count of subarray with sum = k or with k odd elements or sum divisible by K).
 
 ```cpp
 int countSubarraysWithSumK(vector<int>& nums, int k) {
     unordered_map<int, int> prefixCount;
     int count = 0, prefixSum = 0;
 
-    prefixCount[0] = 1; // base case for subarray starting at index 0
+    prefixCount[0] = 1; 
+    // This allows counting subarrays 
+    // whose sum equals k starting from the beginning
+    // (when prefixSum itself becomes k)
 
     for (int num : nums) {
         prefixSum += num;
 
-        if (prefixCount.find(prefixSum - k) != prefixCount.end()) {
-            count += prefixCount[prefixSum - k];
+        int target = prefixSum-k;
+        if (prefixCount.find(target) != prefixCount.end()) {
+            count += prefixCount[target];
         }
 
         prefixCount[prefixSum]++;
@@ -48,6 +57,26 @@ int countSubarraysWithSumK(vector<int>& nums, int k) {
     return count;
 }
 ```
+##### QUESTIONS: 
+* ⬜ **Subarray Sum Equals K**
+  🔗 [Link](https://leetcode.com/problems/subarray-sum-equals-k)
+  🧠 Insight: We store the prefixSum state as the key in map, then use it to find target prefixSum in subarray
+* ⬜ **Subarray Sums Divisible by K**
+  🔗 [Link](https://leetcode.com/problems/subarray-sums-divisible-by-k/description/)
+  🧠 Insight: We store the remainder of the prefix sum modulo k as the key in a map and track how many times each remainder has appeared. If the same remainder occurs at two different indices, then the sum of the subarray between those indices is divisible by k. This is because equal remainders imply that the difference between the two prefix sums is a multiple of k.
+* ⬜ **Count Number of Nice Subarrays/ Count of subarrays with k odd elements**
+  🔗 [Link](https://leetcode.com/problems/count-number-of-nice-subarrays/description/)
+  🧠 Insight: We store the count of odd elements so far , then use it to compute num of subarrays with odd numbers equal to target
+* ⬜ **Contiguous Array with equal 0 and 1**
+  🔗 [Link](https://leetcode.com/problems/contiguous-array/description/)
+  🧠 Insight: For this we add -1 to prefix sum if we encounter 0 else 1, and store the first index of a computed sum in the map, so if the same sum is encountered ahead, we know the subarray in between contains equal number of 0 and 1's and is the longest since we only stored the index of first occurence against each sum in the map
+
+
+#### Important observation in the map we store the key and frequency where key is what we need to store in order to solve the question , for example :
+1. If the problem asks for subarrays with sum = k, we store the prefix sum as the key.
+2. If the problem asks for subarrays with sum divisible by k, we store prefixSum % k (remainder) as the key.
+3. If the problem asks for subarrays with exactly k odd numbers, we store the count of odd numbers encountered so far as the key.
+4. If the problem asks for max length of subarray with a given sum , we store the first index of the prefix sum so far , so that if the required target is needed ahead we get the longest subarray in between
 
 ## 2. Two Pointer (Left - Right) Approach
 
@@ -69,6 +98,17 @@ bool hasPairWithSum(vector<int>& nums, int target) {
     return false;
 }
 ```
+##### QUESTIONS: 
+* ⬜ **Merge Sorted Array**
+  🔗 [Link](https://leetcode.com/problems/merge-sorted-array/description/)
+  🧠 Insight: Since both the arrays too be merged are sorted, we use two pointer to traverse both the arrays , picking up the smaller of the two current elements and moving forward
+* ⬜ **Two Sum**
+  🔗 [Link](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/)
+  🧠 Insight: Since the array is sorted, we place two pointer one at starting and one at end respectively and try to find the pair by moving both the pointer inwards until the sum becomes equal to target
+* ⬜ **Three Sum**
+  🔗 [Link](https://leetcode.com/problems/3sum/submissions/1902994940/)
+  🧠 Insight: We run a loop to fix an elements , then in each iteration we apply the two sum pair technique in the remaining array to find the triplet formed using the fixed element and the pair such that their sum equals target
+   nums[i]+ nums[left] + nums[right]==target
 
 ### 2.2 Find Areas with Boundary Constraints
 Examples: Trapping rain water, Max area of container
@@ -83,6 +123,7 @@ int maxArea(vector<int>& height) {
         int width = right - left;
         maxWater = max(maxWater, h * width);
 
+//since we are moving inwards(reducing width), we move the pointer pointing to a smaller height hoping to find a larger limiting height
         if (height[left] < height[right])
             left++;
         else
@@ -92,6 +133,25 @@ int maxArea(vector<int>& height) {
     return maxWater;
 }
 ```
+* ⬜ **Container With Most Water**
+  🔗 [Link](https://leetcode.com/problems/container-with-most-water/description/)
+  🧠 Insight: We start with the widest container using two pointers at both ends.
+    The area is always limited by the shorter height, so keeping it while reducing width cannot give a better result.
+    To potentially increase the area, we move the pointer pointing to the smaller height, hoping to find a taller line.
+    This way, we explore all promising containers in linear time.
+
+* ⬜ **Trapping Rain Water**
+  🔗 [Link](https://leetcode.com/problems/trapping-rain-water/description/)
+  🧠 Insight:  
+  Water trapped at any Block is given by
+  min(leftMax,rightMax) - height of current block 
+  i.e. Water trapped above any block is determined by the minimum of the maximum heights on its left and right, minus the block’s height.
+\
+  In brute force we can precompute the leftMax and rightMax for each index and use it using an auxillary extra vector  
+\
+  But in optimal approach to prevent extra space
+   Using two pointers starting from both ends, we maintain leftMax and rightMax as the tallest boundaries seen so far. At each step, the side with the smaller maximum height becomes the limiting boundary, so the water trapped there is fixed and independent of the other side. If leftMax < rightMax, we compute water at the left pointer and move it inward; otherwise, we compute water at the right pointer and move it inward.
+
 
 ## 3. Sliding Window Approach
 
@@ -130,6 +190,53 @@ int maxSum(vector<int>& nums, int k) {
 }
 ```
 
+Note : Fixed window pattern can be written similar to dynamic pattern window like this
+
+```cpp
+int maxSumDynamic(vector<int>& nums, int k) {
+    int left = 0, windowSum = 0, maxSum = 0;
+
+    for (int right = 0; right < nums.size(); right++) {
+        windowSum += nums[right];
+
+        // apply dynamic window shrink condition on window length
+        // shrink if size exceeds k
+        while  (right - left + 1 > k) {
+            windowSum -= nums[left];
+            left++;
+        }
+
+
+        // updating ans only when window size == k
+        if (right - left + 1 == k) {
+            maxSum = max(maxSum, windowSum);
+        }
+    }
+
+    return maxSum;
+}
+
+```
+* ⬜ **Maximum Average Subarray I**
+  🔗 [Link](https://leetcode.com/problems/maximum-average-subarray-i/description/)
+  🧠 Insight: We prepare the solution to initial window of size k, then we add the new element to the right and remove the leftmost element of window keeping the size fixed as k, and we compute and compare the solution in the process
+* ⬜ **Find All Anagrams in a String**
+  🔗 [Link](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/)
+🧠 Insight: The basic idea to check if two strings are Anagrams of check other is too check if the len and count each characters in both the strings are equal, for this we can prepare two maps to store count of each char in the two strings and check for equality of both the maps, if they are equal they are anagrams
+In this we can smartly use the fixed window size approach to modify the second map removing the count of leftMost char and adding the count of rightmost char and then comparing with the map of target string
+Instead of maps we can use frequency vectors too to store count of each char using ascii index
+```cpp
+ vector<int> freq1(26, 0), freq2(26, 0);
+ //if ch is lowercase
+ freq1[ch-'a']++;
+```
+
+* ⬜ **Permutation in String**
+  🔗 [Link](https://leetcode.com/problems/permutation-in-string/description/)
+🧠 Insight: Same approach as above, we just check for count of chars in target string and the fixed window of string that is traversed 
+  
+
+
 ### 3.2 Dynamic Size Window
 Used to find the max/min length of window satisfying a given condition.
 
@@ -159,6 +266,18 @@ int maxSubarrayLength(vector<int>& nums, int K) {
     return maxLen;
 }
 ```
+
+* ⬜ **Longest Substring Without Repeating Characters**
+  🔗 [Link](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/)
+  🧠 Insight: The main idea is to use a dynamic sliding window approach with a set or map to track characters in the current window. When a duplicate character is found, shrink the window from the left until no duplicates exist and keep updating the max length
+
+* ⬜ **Minimum Size Subarray Sum**
+  🔗 [Link](https://leetcode.com/problems/minimum-size-subarray-sum/description/)
+  🧠 Insight: while moving the right pointer, we keep track of the current sum. If the sum is greater than or equal to target, we try to shrink the window from the left while maintaining the condition. “while (windowSum  >=k )“
+
+* ⬜ **Max Consecutive Ones III**
+  🔗 [Link](https://leetcode.com/problems/max-consecutive-ones-iii/description/)
+  🧠 Insight: We frame the question in a way to find the max len of subarray with at most k 0(zeros), since we can flip at most k 0 so the longest subarray with atmost k 0 is our ans
 
 ## 4. Fast and Slow Pointer Approach
 

@@ -116,7 +116,3 @@ int longestSubarray(vector<int>& nums, int target) {
 ### 🔴 Hard
 - [Leetcode 76](https://leetcode.com/problems/minimum-window-substring/) – Minimum Window Substring
 - [Leetcode 239](https://leetcode.com/problems/sliding-window-maximum/) – Sliding Window Maximum (uses deque)
-
----
-
-Would you like to practice one of these problems interactively or dive into the next DSA pattern like **Fast & Slow Pointers** or **Binary Search on Answer**?
