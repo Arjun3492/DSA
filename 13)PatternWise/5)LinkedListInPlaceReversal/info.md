@@ -79,64 +79,87 @@ ListNode* reverseList(ListNode* head) {
 
 ```cpp
 // Function to reverse the sublist using Template 1
-ListNode* reverseBetween1(ListNode* head, int left, int right) {
-    if (!head || left == right) return head;
+ListNode *reverseBetween1(ListNode *head, int left, int right)
+{
+    // Edge case: empty list, single node list, or no need to reverse
+    if (!head || !head->next || left == right)
+        return head;
 
-    // Create a dummy node to handle edge cases where left == 1
-    // Dummy node helps preserve a pointer to the new head when reversal starts from the head
-    ListNode* dummy = new ListNode(0);
-    dummy->next = head;
-    ListNode* prev = dummy;
+    // Dummy node is used to simplify edge cases, especially when left == 1
+    ListNode dummy(0);
+    dummy.next = head;
 
-    // Step 1: Reach the node before 'left'
-    for (int i = 1; i < left; ++i) {
+    // 'prev' will eventually point to the node just before the 'left' position
+    ListNode *prev = &dummy;
+
+    // Move 'prev' to the (left - 1)th node
+    for (int i = 1; i < left; i++)
+    {
         prev = prev->next;
     }
 
-    // Step 2: Start reversing the sublist
-    ListNode* curr = prev->next;
-    ListNode* next = nullptr;
-    ListNode* prevSub = nullptr;
+    // Step 2: Initialize pointers for reversal(InPlace reversal Technique)
+    // 'curr' points to the 'left'th node (start of sublist)
+    ListNode *curr = prev->next;
+    // 'prevSub' will become the new head of the reversed sublist
+    ListNode *prevSub = nullptr;
 
-    for (int i = 0; i <= right - left; ++i) {
-        next = curr->next;
-        curr->next = prevSub;
-        prevSub = curr;
-        curr = next;
+    // Step 3: Reverse the sublist from 'left' to 'right'
+    for (int i = 1; i <= right - left + 1; i++)
+    {
+        ListNode *next = curr->next; // Save next node
+        curr->next = prevSub;        // Reverse current node's pointer
+        prevSub = curr;              // Move 'prevSub' forward
+        curr = next;                 // Move 'curr' forward
     }
 
-    // Step 3: Reconnect the reversed sublist back to the main list
-    prev->next->next = curr;   // next node to prev(now at tail of reverse part) points to remaining ll
-    prev->next = prevSub;      // updating the next node of prev to head of reversed LL
+    // Step 4: Connect the reversed sublist back to the main list
 
-    return dummy->next;
+    // 'prev->next' is still pointing to the original 'left'th node (now the tail of reversed sublist)
+    // Connect its 'next' to the node after right (which is curr when the loop ends)
+    prev->next->next = curr;
+
+    // Connect node before 'left' to the new head of the reversed sublist
+    prev->next = prevSub;
+
+    // Return the new head of the list (dummy.next handles case where head is modified)
+    return dummy.next;
 }
 
 // In this in each iteration we move curr one place right and bring the "next" to the front
-ListNode* reverseBetween2(ListNode* head, int left, int right) {
-    if (!head || left == right) return head;
+ListNode *reverseBetween2(ListNode *head, int left, int right)
+{
+    // Dummy node is used to simplify edge cases, especially when left == 1
+    ListNode dummy(0);
+    dummy.next = head;
 
-    //Making a dummy node to handle edge case where reversal starts from 1(i.e. head), so dummy node will preserve pointing to the new head
-    ListNode* dummy = new ListNode(0);
-    dummy->next = head;
-    ListNode* prev = dummy;
+    // 'prev' will eventually point to the node just before the 'left' position
+    ListNode *prev = &dummy;
 
-    //Traverse to before the start of reversal
-    for (int i = 1; i < left; i++) {
+    // Move 'prev' to the (left - 1)th node
+    for (int i = 1; i < left; i++)
+    {
         prev = prev->next;
     }
 
-    ListNode* curr = prev->next;
-    for (int i = 0; i < right - left; i++) {
-        ListNode* next = curr->next;
-        // moving curr one place to right
-        curr->next = next->next; 
-        // pointing next to the front
+    // 'curr' points to the 'left'th node, which will be the tail of the reversed sublist
+    ListNode *curr = prev->next;
+
+    // Perform (right - left) head insertions to reverse the sublist
+    for (int i = 0; i < right - left; i++)
+    {
+        // 'next' is the node to be moved to the front of the reversed sublist
+        ListNode *next = curr->next;
+
+        // Step 1: Remove 'next' from its current position
+        curr->next = next->next;
+
+        // Step 2: Insert 'next' right after 'prev'
         next->next = prev->next;
-        // marking the new front 
         prev->next = next;
     }
 
+    // Return the new head of the list (dummy.next handles case where head is modified)
     return dummy.next;
 }
 ```

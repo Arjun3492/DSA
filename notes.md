@@ -354,8 +354,7 @@ bool isPalindrome(ListNode* head) {
     if (!head || !head->next) return true;
 
     // Step 1: Find middle
-    ListNode* slow = head;
-    ListNode* fast = head;
+    ListNode* slow = head, *fast = head;
     while (fast && fast->next) {
         slow = slow->next;
         fast = fast->next->next;
@@ -413,7 +412,7 @@ int duplicateNum(vector<int>& arr) {
 }
 ```
 
-## 5. Linked List In-Place Reversal
+## 5. Linked List In-Place Reversal~
 
 Used to reverse a given linked list, reverse a part of linked list, or rotate linked list in groups of K.
 
@@ -547,11 +546,12 @@ Used to find the:
 2. Previous Greater/Smaller Element
 3. Problems involving Height(Histogram), temperature(Cooler Day) or Price (Stock Span)
 
+
 ### 6.1 Next Greater/Smaller Element
 
 ```cpp
 //NEXT GREATER ELEMENT
-// In this approach we process the elements that are being processed
+// In this approach we process the elements that are being popped
 vector<int> nge(vector<int> &nums)
 {
     int n = nums.size();
@@ -560,18 +560,20 @@ vector<int> nge(vector<int> &nums)
     for (int i = 0; i < n; i++)
     {
         // if the stack is not empty && current element > top of stack
-        if (!st.empty() && nums[i] > nums[st.top()])
+        while (!st.empty() && nums[i] > nums[st.top()])
         {
             int topIndex = st.top();
             // current element is NGE of the top index element
             ans[topIndex] = nums[i];
+            st.pop();
+
         }
         st.push(i); // push the current index to stack
     }
 }
 
 //PREVIOUS GREATER ELEMENT
-vector<int> nge(vector<int> &nums)
+vector<int> pge(vector<int> &nums)
 {
     int n = nums.size();
     stack<int> st;
@@ -579,11 +581,12 @@ vector<int> nge(vector<int> &nums)
     for (int i = n-1; i >=0; i--)
     {
         // if the stack is not empty && current element > top of stack
-        if (!st.empty() && nums[i] > nums[st.top()])
+        whiles (!st.empty() && nums[i] > nums[st.top()])
         {
             int topIndex = st.top();
             // current element is PGE of the top index element
             ans[topIndex] = nums[i];
+            st.pop();
         }
         st.push(i); // push the current index to stack
     }
@@ -591,7 +594,17 @@ vector<int> nge(vector<int> &nums)
 ```
 Similarly for NSE and PSE , the comparison operator with the current element will switch to <
 -  if (!st.empty() && nums[i] < nums[st.top()])
--  
+
+Note: 
+| Problem                        | Traversal    | Condition in while loop     | Stack type |
+| ------------------------------ | ------------ | --------------------------- | ---------- |
+| Next Greater Element (NGE)     | Left → Right | `nums[i] > nums[st.top()]`  | Decreasing |
+| Next Smaller Element (NSE)     | Left → Right | `nums[i] < nums[st.top()]`  | Increasing |
+| Previous Greater Element (PGE) | Left → Right | `nums[i] > nums[st.top()]` | Decreasing |
+| Previous Smaller Element (PSE) | Left → Right | `nums[i] < nums[st.top()]` | Increasing |
+
+Greater problems → Decreasing stack
+Smaller problems → Increasing stack
 
 ### 6.2 Area of Histogram
 
@@ -627,6 +640,31 @@ int largestRectangleArea(vector<int>& heights) {
     return maxArea;
 }
 ```
+
+* ⬜ **Next Greater Element I**
+  🔗 [Link](https://leetcode.com/problems/next-greater-element-i/description/)
+  🧠 Insight: Stack stores unresolved indices. When a better element arrives, resolve all smaller/greater elements on the stack.
+
+    1️⃣ Pop phase
+    - While the stack is not empty and the current element satisfies the problem condition
+    (e.g., >, <, >=, <=),
+    the current element becomes the answer for the stack top → pop it.
+
+    2️⃣ Push phase
+    - Push the current index because its answer will be found later.
+    <br>
+* ⬜ **Daily Temperatures**
+  🔗 [Link](https://leetcode.com/problems/daily-temperatures/description/)
+  🧠 Insight: Treat it as a Next Greater Element problem. Use a stack to store indices of days whose warmer day hasn't been found. When a warmer temperature appears, pop the index and compute the wait as:
+    - days = currentIndex − poppedIndex.
+    <br>
+* ⬜ **Largest Rectangle in Histogram**
+  🔗 [Link](https://leetcode.com/problems/largest-rectangle-in-histogram/description/)
+  🧠 Insight: Area formed by a given rectangle at index i , is given as height[i] * (nextSmallerElementIdx - previousSmallerElementIdx - 1), so we combine both nse and pse approach to solve this problem.
+  And in optimal approach When an element is popped from the increasing stack, the current index i becomes its NSE, and the new stack top becomes its PSE, allowing us to compute the rectangle width and area immediately. 
+    <br>
+
+
 
 ## 7. Top K elements (Priority Queue)
 
