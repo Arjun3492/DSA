@@ -31,7 +31,9 @@ int rangeSum(const vector<int>& prefix, int l, int r) {
   🧠 Insight: We precompute the prefixSum array and then use it to return prefix between two indices
 
 ### 1.2 Prefix Sum with HashMap (Target Strategy)
-Used to find count of subarrays satisfying a given condition (e.g., count of subarray with sum = k or with k odd elements or sum divisible by K).
+Used to find count  of subarrays satisfying a given condition (e.g., count of subarray with sum = k or with k odd elements or sum divisible by K).
+OR
+To find the length of subarray satisfying a given condition(eg. max length of subarray having eq 0 and 1)
 
 ```cpp
 int countSubarraysWithSumK(vector<int>& nums, int k) {
@@ -156,7 +158,9 @@ int maxArea(vector<int>& height) {
 ## 3. Sliding Window Approach
 
 ### 3.1 Fixed Size Window
-Used to find the sum/avg/max/min of a fixed size window.
+Used to find the sum/avg/max/min of a fixed size window 
+or
+To check for fixed size windows satisfying a given condition(eg. checks for anagrams of string s1 and s2)
 
 **Example:** Find max sum of subarray of size K
 
@@ -222,7 +226,7 @@ int maxSumDynamic(vector<int>& nums, int k) {
   🧠 Insight: We prepare the solution to initial window of size k, then we add the new element to the right and remove the leftmost element of window keeping the size fixed as k, and we compute and compare the solution in the process
 * ⬜ **Find All Anagrams in a String**
   🔗 [Link](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/)
-🧠 Insight: The basic idea to check if two strings are Anagrams of check other is too check if the len and count each characters in both the strings are equal, for this we can prepare two maps to store count of each char in the two strings and check for equality of both the maps, if they are equal they are anagrams
+🧠 Insight: The basic idea to check if two strings are Anagrams of each other is too check if the len and count each characters in both the strings are equal, for this we can prepare two maps to store count of each char in the two strings and check for equality of both the maps, if they are equal they are anagrams
 In this we can smartly use the fixed window size approach to modify the second map removing the count of leftMost char and adding the count of rightmost char and then comparing with the map of target string
 Instead of maps we can use frequency vectors too to store count of each char using ascii index
 ```cpp
@@ -238,7 +242,7 @@ Instead of maps we can use frequency vectors too to store count of each char usi
 
 
 ### 3.2 Dynamic Size Window
-Used to find the max/min length of window satisfying a given condition.
+Used to find the max/min length of window satisfying a given condition, where the condition is monotonic that is the condition can be restored by reducing the window size.
 
 **Example:** Find the max length of subarray whose sum is ≤ K
 
@@ -1141,3 +1145,5 @@ int splitArrayMinimizeMax(vector<int> &nums, int k) {
     return left;  // Minimum possible maximum subarray sum
 }
 ```
+
+## 9 
