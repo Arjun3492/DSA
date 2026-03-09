@@ -672,7 +672,7 @@ int largestRectangleArea(vector<int>& heights) {
 
 ## 7. Top K elements (Priority Queue)
 
-Used when we need to find the top k elements that satisfy a given condition from a range or stream of elements.
+Used when we need to find the top k elements based on a given metric
 
 Example:
 1. Find Kth largest/smallest elements
@@ -818,6 +818,19 @@ vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
 }
 
 ```
+
+* ⬜ **Kth Largest Element in a Stream**
+  🔗 [Link](https://leetcode.com/problems/kth-largest-element-in-a-stream)
+  🧠 Insight: As we process the stream, each element is inserted into a **min-heap**. If the heap size exceeds **k**, we remove the top element (the smallest). This ensures the heap always keeps the **k largest elements**, since the smaller **n − k** elements are discarded during traversal. <br>
+
+* ⬜ **Top K Frequent Elements**
+  🔗 [Link]([Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements))
+  🧠 Insight: First, we use a **map** to compute the frequency of each element. Then we traverse the map and push **(frequency, element)** pairs into a **min-heap**. Whenever the heap size exceeds **k**, we remove the top pair (the least frequent at that moment). After processing all pairs, the heap contains the **k most frequent elements**. <br>
+
+* ⬜ **K Closest Points to Origin**
+  🔗 [Link](https://leetcode.com/problems/k-closest-points-to-origin)
+  🧠 Insight: We iterate through all points and push **(distance, point)** pairs into a **max-heap**. If the heap size exceeds **k**, we remove the top element (the farthest point). This way, the heap always maintains the **k closest points to the origin** based on their distance. <br>
+
 ## 8. Binary Search Technique
 
 When to Use Binary Search
