@@ -833,12 +833,13 @@ vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
 
 ## 8. Binary Search Technique
 
+Used whenever the search space is ordered/monotonic and we can eliminate half the possibilities at each step.
+
 When to Use Binary Search
-1. **Sorted Array Problems**: Find element in rotated sorted array
-2. **Boundary Problems**: First/Last occurrence of target in sorted search space
-3. **Peak Finding**: Boundary elements (Floor/Ceil/Peak) in mountain arrays
-4. **Optimization Problems**: Minimum/maximum solution to a problem
-5. **Partition Problems**: Minimize max value or maximize min value of partitions
+1. **Sorted Array Problems**: Find target or its First/Last occurrence sorted search space
+2. **Boundary Problems**: Find Boundary elements (Floor/Ceil/Peak) in mountain arrays(i.e. having directional property (increasing/decreasing))
+3. **Optimization Problems**: Minimum/maximum solution to a problem within given constraints
+4. **Partition Problems**: Minimize max value or maximize min value of partitions
 
 
 ### 8.1: Element in Rotated Sorted Array
@@ -864,7 +865,7 @@ int searchInRotatedArray(vector<int> &nums, int target) {
     int left = 0, right = nums.size() - 1;
 
     while (left <= right) {
-        int mid = left + (right - left) / 2;
+        int mid = left + (right - left) / 2;//overflow safe
 
         // Found the target
         if (nums[mid] == target) {
@@ -1007,6 +1008,45 @@ int findPeakElement(vector<int> &nums) {
     return left;
 }
 ```
+## Below are problems involving BS application on the answer search space
+Template for the same:
+
+```cpp
+//Utility method to retrieve the answer search space
+pair<int,int> getSearchBounds(vector<int>& nums);
+
+//Utility method to check if current solution is feasible
+bool checkFeasibility(vector<int>& nums, int mid, int k);
+
+int solve(vector<int> &nums, int k) {
+
+    int ans=-1;
+    // Step 1: Define answer search space
+    auto [left, right] = getSearchBounds(nums);
+
+    while (left <= right) {
+
+        int mid = left + (right - left) / 2;
+
+        // Step 2: Check if this answer is feasible
+        bool isFeasible = checkFeasibility(nums, mid, k);
+
+        if (isFeasible) {
+            // mid could be a possible answer, but we look for better smaller value
+            ans=mid;
+            right = mid-1;
+        } 
+        else {
+            // mid too small / invalid → increase answer
+            left = mid + 1;
+            //mid cannot be the answer so we discard it from search space
+        }
+    }
+
+    // Step 3: Final answer
+    return ans;
+}
+```
 
 ### 8.4: Minimum/Maximum Solution (Capacity Problems)
 
@@ -1032,48 +1072,63 @@ We can binary search on the answer space (capacity). The minimum possible capaci
 **Time Complexity**: O(n * log(sum of weights))  
 **Space Complexity**: O(1)
 */
-// Helper function: Check if we can ship all packages within D days with given capacity
+
+// Step 2: Feasibility check (checkFeasibility)
 bool canShipWithCapacity(vector<int> &weights, int capacity, int days) {
+
     int currentWeight = 0;
     int daysNeeded = 1;
-    
+
     for (int weight : weights) {
+
         // If adding current package exceeds capacity, ship on next day
         if (currentWeight + weight > capacity) {
+
             daysNeeded++;
             currentWeight = weight;  // Start new day with current package
-            
+
             // If we exceed allowed days, this capacity is insufficient
             if (daysNeeded > days) {
                 return false;
             }
+
         } else {
             currentWeight += weight;
         }
     }
-    
+
     return true;
 }
 
 int shipWithinDays(vector<int> &weights, int days) {
-    // Set search bounds
-    int left = *max_element(weights.begin(), weights.end());    // Min capacity
-    int right = accumulate(weights.begin(), weights.end(), 0);  // Max capacity
 
-    while (left < right) {
+    int ans=-1;
+
+    // Step 1: Define search bounds (getSearchBounds)
+    int left = *max_element(weights.begin(), weights.end());     // Min capacity
+    int right = accumulate(weights.begin(), weights.end(), 0);   // Max capacity
+
+    while (left <= right) {
+
         int mid = left + (right - left) / 2;
-        
-        if (canShipWithCapacity(weights, mid, days)) {
-            right = mid;        // This capacity works, try smaller
+
+        // Step 2: Check feasibility of current answer
+        bool isFeasible = canShipWithCapacity(weights, mid, days);
+
+        // Step 3: Adjust search space
+        if (isFeasible) {
+             // mid works → try smaller capacity
+            ans=mid;
+            right = mid-1;       
         } else {
-            left = mid + 1;     // This capacity insufficient, need larger
+            left = mid + 1;     // mid insufficient → increase capacity
         }
     }
-    
-    return left;  // Minimum sufficient capacity
+
+    // Step 4: Return optimal answer
+    return ans;   // Minimum sufficient capacity
 }
 ```
-
 
 ---
 
@@ -1081,7 +1136,6 @@ int shipWithinDays(vector<int> &weights, int days) {
 
 ```cpp
 /*
-
 
 ### Problem
 Split array into K subarrays to minimize the maximum sum among all subarrays.
@@ -1104,59 +1158,78 @@ We binary search on the answer (maximum subarray sum). For each potential maximu
 **Time Complexity**: O(n * log(sum of array))  
 **Space Complexity**: O(1)
 */
-// Helper: Count minimum partitions needed for given maximum subarray sum
-int getMinPartitions(vector<int> &nums, int maxSum) {
+
+// Step 2: Feasibility helper (checkFeasibility)
+bool canSplitWithinK(vector<int> &nums, int maxSum, int k) {
+
     int currentSum = 0;
     int partitions = 1;
-    
+
     for (int num : nums) {
+
         // Try to add current number to current partition
         if (currentSum + num <= maxSum) {
             currentSum += num;
-        } else {
+        }
+        else {
             // Current number doesn't fit, start new partition
             partitions++;
             currentSum = num;
+
+            // If partitions exceed k, this maxSum is not feasible
+            if (partitions > k) {
+                return false;
+            }
         }
     }
-    
-    return partitions;
+
+    return true;
 }
 
-// Get the valid range for binary search
+// Step 1: Define search space (getSearchBounds)
 pair<int, int> getSearchBounds(vector<int> &nums) {
+
     // Lower bound: Maximum single element
     // (Each subarray must contain at least one element)
     int lowerBound = *max_element(nums.begin(), nums.end());
-    
+
     // Upper bound: Sum of all elements  
     // (Entire array as single subarray)
     int upperBound = accumulate(nums.begin(), nums.end(), 0);
-    
+
     return {lowerBound, upperBound};
 }
 
 int splitArrayMinimizeMax(vector<int> &nums, int k) {
-    //Getting the bounds for answer space
+
+    int ans=-1;
+    // Step 1: Getting the bounds for answer space
     auto [left, right] = getSearchBounds(nums);
-    
-    while (left < right) {
+
+    while (left <= right) {
+
         int mid = left + (right - left) / 2;
-        int partitionsNeeded = getMinPartitions(nums, mid);
-        
-        if (partitionsNeeded <= k) {
+
+        // Step 2: Evaluate feasibility of candidate answer
+        bool isFeasible = canSplitWithinK(nums, mid, k);
+
+
+        // Step 3: Adjust search space
+        if (isFeasible) {
             // We can split with this max sum using ≤ k partitions
             // Try to minimize further
-            right = mid;
+            ans=mid;
+            right = mid-1;
+
         } else {
             // Need more than k partitions with this max sum
             // Increase the allowed maximum sum
             left = mid + 1;
         }
     }
-    
-    return left;  // Minimum possible maximum subarray sum
+
+    // Step 4: Return optimal answer
+    return ans;  // Minimum possible maximum subarray sum
 }
 ```
-
 ## 9 
