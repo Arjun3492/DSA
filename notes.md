@@ -80,6 +80,30 @@ int countSubarraysWithSumK(vector<int>& nums, int k) {
 3. If the problem asks for subarrays with exactly k odd numbers, we store the count of odd numbers encountered so far as the key.
 4. If the problem asks for max length of subarray with a given sum , we store the first index of the prefix sum so far , so that if the required target is needed ahead we get the longest subarray in between
 
+Note: In this prefixSum hashmap pattern we maintain three variable constrains:
+1.  preFix hashMap //used to store the key and its occuring freq
+2.  preFix Key// the key against which element need to be stored in hashmap, for example it could be preFixSum so far,preFixCountOfKOddElements so far, preFixReminder
+3.  ans var to store the total count needed to be returned
+4.  Generic Template is as follows:
+```cpp
+int fn(vector<int>&nums,k){
+    unordered_map<int,int> mpp;//prefixHashMap
+    int preFixSum=0;//prefixKey
+    int ans=0;//ans needed to be returned
+    for(int num:nums){
+        preFixSum+=num;
+        int target = preFixSum-k;
+        if(mpp.find(target)!=mpp.end()){
+            ans+=mpp[target];
+        }
+        mpp[preFixSum]++;
+    }
+    return ans;
+}
+```
+
+---
+---
 ## 2. Two Pointer (Left - Right) Approach
 
 ### 2.1 Find Pair with Target Sum in Sorted Array
@@ -155,6 +179,8 @@ int maxArea(vector<int>& height) {
    Using two pointers starting from both ends, we maintain leftMax and rightMax as the tallest boundaries seen so far. At each step, the side with the smaller maximum height becomes the limiting boundary, so the water trapped there is fixed and independent of the other side. If leftMax < rightMax, we compute water at the left pointer and move it inward; otherwise, we compute water at the right pointer and move it inward.
 
 
+---
+---
 ## 3. Sliding Window Approach
 
 ### 3.1 Fixed Size Window
@@ -283,6 +309,8 @@ int maxSubarrayLength(vector<int>& nums, int K) {
   🔗 [Link](https://leetcode.com/problems/max-consecutive-ones-iii/description/)
   🧠 Insight: We frame the question in a way to find the max len of subarray with at most k 0(zeros), since we can flip at most k 0 so the longest subarray with atmost k 0 is our ans
 
+---
+---
 ## 4. Fast and Slow Pointer Approach
 
 ### 4.1 Find Middle of Linked List
@@ -416,6 +444,8 @@ int duplicateNum(vector<int>& arr) {
 }
 ```
 
+---
+---
 ## 5. Linked List In-Place Reversal~
 
 Used to reverse a given linked list, reverse a part of linked list, or rotate linked list in groups of K.
@@ -543,6 +573,8 @@ ListNode* reverseKGroup(ListNode* head, int k) {
 }
 ```
 
+---
+---
 ## 6. Monotonic Stack
 
 Used to find the:
@@ -670,6 +702,8 @@ int largestRectangleArea(vector<int>& heights) {
 
 
 
+---
+---
 ## 7. Top K elements (Priority Queue)
 
 Used when we need to find the top k elements based on a given metric
@@ -831,6 +865,8 @@ vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
   🔗 [Link](https://leetcode.com/problems/k-closest-points-to-origin)
   🧠 Insight: We iterate through all points and push **(distance, point)** pairs into a **max-heap**. If the heap size exceeds **k**, we remove the top element (the farthest point). This way, the heap always maintains the **k closest points to the origin** based on their distance. <br>
 
+---
+---
 ## 8. Binary Search Technique
 
 Used whenever the search space is ordered/monotonic and we can eliminate half the possibilities at each step.
@@ -841,6 +877,86 @@ When to Use Binary Search
 3. **Optimization Problems**: Minimum/maximum solution to a problem within given constraints
 4. **Partition Problems**: Minimize max value or maximize min value of partitions
 
+
+####  Binary Search Rule of Thumb
+
+#### 1️⃣ When searching for an **exact element**
+
+Use:
+
+```cpp
+while (left <= right)
+```
+
+* The search space is a **closed interval `[left, right]`**.
+* In every iteration, **`mid` is discarded from the search space**:
+
+  * `left = mid + 1`
+  * `right = mid - 1`
+* This guarantees the search space **strictly shrinks**, so `left` and `right` will eventually **cross each other (`left > right`)**.
+
+Since the final answer might be lost while shrinking the search space, we usually **store a candidate answer in a separate variable (`ans`)** and return it.
+
+---
+
+#### 2️⃣ When searching for a **boundary (first/last occurrence)**
+
+Use:
+
+```cpp
+while (left < right)
+```
+
+* The search space **shrinks toward the boundary**.
+* Here, **`mid` may remain in the search space** because it might still be the correct answer.
+
+Two common cases:
+
+**First Occurrence / Minimum / First True**
+
+```cpp
+if(isFeasible)
+    right = mid; //right might be the first true candidate so kept in search space
+else
+    left = mid+1;
+```
+
+* `mid` might be the **first valid position**, so we **keep it** in the search space.
+
+---
+
+**Last Occurrence / Maximum / Last True**
+
+```cpp
+if(isFeasible)
+    left = mid;//left might the last true candidate so kept kept in search space
+else
+    right = mid-1;
+```
+
+* `mid` might be the **last valid position**, so we **keep it** in the search space.
+
+---
+
+At the end of the loop:
+
+```cpp
+left == right
+```
+
+So we can directly return:
+
+```cpp
+return left;  // or right (both are same)
+```
+
+---
+
+✅ **Short Memory Trick**
+
+* **Exact search →** `left <= right` → discard `mid`
+* **Boundary search →** `left < right` → keep `mid` when it might be the answer
+* **End condition:** boundary search always converges to `left == right`
 
 ### 8.1: Element in Rotated Sorted Array
 
@@ -1008,7 +1124,7 @@ int findPeakElement(vector<int> &nums) {
     return left;
 }
 ```
-## Below are problems involving BS application on the answer search space
+### Below are problems involving BS application on the answer search space
 Template for the same:
 
 ```cpp
@@ -1024,7 +1140,7 @@ int solve(vector<int> &nums, int k) {
     // Step 1: Define answer search space
     auto [left, right] = getSearchBounds(nums);
 
-    while (left <= right) {
+    while (left < right) {
 
         int mid = left + (right - left) / 2;
 
@@ -1033,8 +1149,7 @@ int solve(vector<int> &nums, int k) {
 
         if (isFeasible) {
             // mid could be a possible answer, but we look for better smaller value
-            ans=mid;
-            right = mid-1;
+            right = mid;
         } 
         else {
             // mid too small / invalid → increase answer
@@ -1044,7 +1159,7 @@ int solve(vector<int> &nums, int k) {
     }
 
     // Step 3: Final answer
-    return ans;
+    return left;
 }
 ```
 
@@ -1108,7 +1223,7 @@ int shipWithinDays(vector<int> &weights, int days) {
     int left = *max_element(weights.begin(), weights.end());     // Min capacity
     int right = accumulate(weights.begin(), weights.end(), 0);   // Max capacity
 
-    while (left <= right) {
+    while (left < right) {
 
         int mid = left + (right - left) / 2;
 
@@ -1118,15 +1233,14 @@ int shipWithinDays(vector<int> &weights, int days) {
         // Step 3: Adjust search space
         if (isFeasible) {
              // mid works → try smaller capacity
-            ans=mid;
-            right = mid-1;       
+            right = mid;       
         } else {
             left = mid + 1;     // mid insufficient → increase capacity
         }
     }
 
     // Step 4: Return optimal answer
-    return ans;   // Minimum sufficient capacity
+    return left;   // Minimum sufficient capacity
 }
 ```
 
@@ -1206,7 +1320,7 @@ int splitArrayMinimizeMax(vector<int> &nums, int k) {
     // Step 1: Getting the bounds for answer space
     auto [left, right] = getSearchBounds(nums);
 
-    while (left <= right) {
+    while (left < right) {
 
         int mid = left + (right - left) / 2;
 
@@ -1218,8 +1332,7 @@ int splitArrayMinimizeMax(vector<int> &nums, int k) {
         if (isFeasible) {
             // We can split with this max sum using ≤ k partitions
             // Try to minimize further
-            ans=mid;
-            right = mid-1;
+            right = mid;
 
         } else {
             // Need more than k partitions with this max sum
@@ -1229,7 +1342,317 @@ int splitArrayMinimizeMax(vector<int> &nums, int k) {
     }
 
     // Step 4: Return optimal answer
-    return ans;  // Minimum possible maximum subarray sum
+    return left;  // Minimum possible maximum subarray sum
 }
 ```
+---
+---
 ## 9 
+---
+---
+## 10. Binary Tree Traversal
+#### 10.1 PreOrder DFS (Root → Left → Right)
+##### Used when:
+* You need to **create/copy a tree**
+* Useful in **serialization/deserialization**
+* When **root must be processed before children**
+* Problems involving **top-down propagation (path, prefix building)**
+
+##### Template:
+```cpp
+// 1. Recursive Approach
+// Intuition:
+// Process current node first, then recursively go left and right.
+// This mimics "Root → Left → Right"
+
+void preOrder(Node* root, vector<Node*>& ans) {
+    if (!root) return;
+
+    ans.push_back(root);        // Step 1: Process current node
+    preOrder(root->left, ans);  // Step 2: Traverse left subtree
+    preOrder(root->right, ans); // Step 3: Traverse right subtree
+}
+
+// 2. Iterative Approach
+// Intuition:
+// Use stack (LIFO). Push right first so left is processed first.
+
+vector<Node*> preOrder(Node* root) {
+    if (!root) return {};
+
+    stack<Node*> st;
+    vector<Node*> ans;
+
+    st.push(root); // Start with root
+
+    while (!st.empty()) {
+        Node* node = st.top();
+        st.pop();
+
+        ans.push_back(node); // Process node
+
+        // Push right first (so left is processed first)
+        if (node->right) st.push(node->right);
+        if (node->left) st.push(node->left);
+    }
+
+    return ans;
+}
+```
+##### Questions for PreOrder:
+
+* ⬜ **Binary Tree Preorder Traversal**
+  🔗 [https://leetcode.com/problems/binary-tree-preorder-traversal/](https://leetcode.com/problems/binary-tree-preorder-traversal/)
+  🧠 Insight: Direct traversal template application
+
+* ⬜ **Same Tree**
+  🔗 [https://leetcode.com/problems/same-tree/](https://leetcode.com/problems/same-tree/)
+  🧠 Insight: Compare structure + values using DFS
+
+* ⬜ **Path Sum**
+  🔗 [https://leetcode.com/problems/path-sum/](https://leetcode.com/problems/path-sum/)
+  🧠 Insight: Top-down propagation of remaining sum
+
+* ⬜ **Construct Binary Tree from Preorder and Inorder Traversal**
+  🔗 [https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+  🧠 Insight: Preorder gives root, inorder splits left/right
+
+---
+
+#### 10.2 InOrder DFS (Left → Root → Right)
+##### Used when:
+* For **BST → gives sorted order**
+* When you need **increasing/decreasing sequence**
+* Problems involving **kth smallest/largest**
+* Validate **BST property**
+##### Template
+
+```cpp
+// 1. Recursive Approach
+// Intuition:
+// First go left (small values), then process node, then right.
+
+void inOrder(Node* root, vector<Node*>& ans) {
+    if (!root) return;
+
+    inOrder(root->left, ans);  // Step 1: Traverse left subtree
+    ans.push_back(root);       // Step 2: Process node
+    inOrder(root->right, ans); // Step 3: Traverse right subtree
+}
+
+// 2. Iterative Approach
+// Intuition:
+// Go as left as possible, then process node, then go right.
+
+vector<Node*> inOrder(Node* root) {
+    vector<Node*> ans;
+    stack<Node*> st;
+    Node* curr = root;
+
+    while (curr || !st.empty()) {
+
+        // Step 1: Go to extreme left
+        while (curr) {
+            st.push(curr);
+            curr = curr->left;
+        }
+
+        // Step 2: Process node
+        curr = st.top();
+        st.pop();
+        ans.push_back(curr);
+
+        // Step 3: Move to right subtree
+        curr = curr->right;
+    }
+
+    return ans;
+}
+```
+##### Questions for InOrder:
+
+* ⬜ **Binary Tree Inorder Traversal**
+  🔗 [https://leetcode.com/problems/binary-tree-inorder-traversal/](https://leetcode.com/problems/binary-tree-inorder-traversal/)
+  🧠 Insight: Direct template
+
+* ⬜ **Validate Binary Search Tree**
+  🔗 [https://leetcode.com/problems/validate-binary-search-tree/](https://leetcode.com/problems/validate-binary-search-tree/)
+  🧠 Insight: Inorder must be strictly increasing
+
+* ⬜ **Kth Smallest Element in a BST**
+  🔗 [https://leetcode.com/problems/kth-smallest-element-in-a-bst/](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
+  🧠 Insight: Inorder traversal index
+
+* ⬜ **Recover Binary Search Tree**
+  🔗 [https://leetcode.com/problems/recover-binary-search-tree/](https://leetcode.com/problems/recover-binary-search-tree/)
+  🧠 Insight: Detect swapped nodes via inorder anomaly
+
+---
+
+#### 10.3 PostOrder DFS (Left → Right → Root)
+
+##### Used when:
+* When **children must be processed before parent**
+* Useful in **deletion of tree**
+* Problems like **diameter, height, DP on trees**
+* Bottom-up computations
+
+##### Template
+
+```cpp
+// 1. Recursive Approach
+// Intuition:
+// First solve left and right subtrees, then process root.
+
+void postOrder(Node* root, vector<Node*>& ans) {
+    if (!root) return;
+
+    postOrder(root->left, ans);   // Step 1: Left subtree
+    postOrder(root->right, ans);  // Step 2: Right subtree
+    ans.push_back(root);          // Step 3: Process node
+}
+
+
+// 2. Iterative (2 Stacks)
+// Intuition:
+// Reverse of preorder (Root → Right → Left)
+// Then reverse result to get Left → Right → Root
+
+vector<Node*> postOrder(Node* root) {
+    if (!root) return {};
+
+    stack<Node*> st1, st2;
+    vector<Node*> ans;
+
+    st1.push(root);
+
+    while (!st1.empty()) {
+        Node* node = st1.top();
+        st1.pop();
+
+        st2.push(node);
+
+        if (node->left) st1.push(node->left);
+        if (node->right) st1.push(node->right);
+    }
+
+    while (!st2.empty()) {
+        ans.push_back(st2.top());
+        st2.pop();
+    }
+
+    return ans;
+}
+
+// 3. Iterative (1 Stack)
+// Intuition:
+// Track last visited node to know if right subtree is processed.
+
+vector<Node*> postOrder(Node* root) {
+    if (!root) return {};
+
+    vector<Node*> ans;
+    stack<Node*> st;
+    Node* curr = root;
+    Node* lastVisited = nullptr;
+
+    while (curr || !st.empty()) {
+
+        if (curr) {
+            st.push(curr);
+            curr = curr->left;
+        } else {
+            Node* node = st.top();
+
+            // If right exists and not processed
+            if (node->right && lastVisited != node->right) {
+                curr = node->right;
+            } else {
+                ans.push_back(node);
+                st.pop();
+                lastVisited = node;
+            }
+        }
+    }
+
+    return ans;
+}
+```
+##### Questions for PostOrder:
+
+* ⬜ **Binary Tree Postorder Traversal**
+  🔗 [https://leetcode.com/problems/binary-tree-postorder-traversal/](https://leetcode.com/problems/binary-tree-postorder-traversal/)
+  🧠 Insight: Template
+
+* ⬜ **Diameter of Binary Tree**
+  🔗 [https://leetcode.com/problems/diameter-of-binary-tree/](https://leetcode.com/problems/diameter-of-binary-tree/)
+  🧠 Insight: Bottom-up height calculation
+
+* ⬜ **Binary Tree Maximum Path Sum**
+  🔗 [https://leetcode.com/problems/binary-tree-maximum-path-sum/](https://leetcode.com/problems/binary-tree-maximum-path-sum/)
+  🧠 Insight: Postorder DP
+
+---
+
+#### 10.4 BFS – Level Order Traversal
+
+##### Used when:
+
+* When traversal is **level by level**
+* Shortest path in **unweighted tree/graph**
+* Problems involving:
+
+  * **Level grouping**
+  * **Zigzag traversal**
+  * **Minimum depth**
+
+---
+
+##### Template :
+
+```cpp
+// Intuition:
+// Use queue (FIFO). Process nodes level by level.
+
+vector<int> bfs(Node* root) {
+    if (!root) return {};
+
+    queue<Node*> q;
+    vector<int> ans;
+
+    q.push(root);
+
+    while (!q.empty()) {
+        Node* node = q.front();
+        q.pop();
+
+        ans.push_back(node->val); // Process node
+
+        if (node->left) q.push(node->left);
+        if (node->right) q.push(node->right);
+    }
+
+    return ans;
+}
+```
+
+##### Questions for Level Order:
+
+* ⬜ **Binary Tree Level Order Traversal**
+  🔗 [https://leetcode.com/problems/binary-tree-level-order-traversal/](https://leetcode.com/problems/binary-tree-level-order-traversal/)
+  🧠 Insight: Classic BFS
+
+* ⬜ **Binary Tree Zigzag Level Order Traversal**
+  🔗 [https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/)
+  🧠 Insight: Alternate direction per level
+
+* ⬜ **Minimum Depth of Binary Tree**
+  🔗 [https://leetcode.com/problems/minimum-depth-of-binary-tree/](https://leetcode.com/problems/minimum-depth-of-binary-tree/)
+  🧠 Insight: First leaf encountered in BFS
+
+* ⬜ **Serialize and Deserialize Binary Tree**
+  🔗 [https://leetcode.com/problems/serialize-and-deserialize-binary-tree/](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/)
+  🧠 Insight: Level order encoding
+
+---
+---
