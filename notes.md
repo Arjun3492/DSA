@@ -1347,18 +1347,271 @@ int splitArrayMinimizeMax(vector<int> &nums, int k) {
 ```
 ---
 ---
-## 9 
+## 9 Overlapping Intervals
+
+### Overlapping interval Pattern Summary
+
+| Pattern         | Key Idea            |
+| --------------- | ------------------- |
+| Merge Intervals | Sort + Greedy merge |
+| Insert Interval | 3-phase processing  |
+| Line Sweep      | Convert to events   |
+
+
+#### Universal Overlap Condition (VERY IMPORTANT)
+
+Use this in almost every interval problem:
+
+```cpp
+// Two intervals [a, b] and [c, d] overlap if:
+if (c <= b && a <= d)
+```
+
+Or simplified (when sorted):
+
+```cpp
+if (curr_start <= prev_end)
+```
+
+---
+
+### 9.1 Merge Overlapping Intervals
+#### Used when:
+
+* Given **random intervals → merge overlapping ones**
+* Need **non-overlapping result**
+* Problems asking for:
+
+  * “merge intervals”
+  * “combine overlapping ranges”
+* Core idea: **Sort + Greedy merge**
+
+#### Template:
+
+```cpp
+// 🔹 INTUITION:
+// 1. Sort intervals by start time
+// 2. Keep a result array
+// 3. Compare current interval with last merged interval
+//    - If overlap → merge
+//    - Else → push new interval
+
+vector<vector<int>> merge(vector<vector<int>>& intervals) {
+    if (intervals.empty()) return {};
+
+    // Step 1: Sort by start time
+    sort(intervals.begin(), intervals.end());
+
+    vector<vector<int>> ans;
+
+    // Step 2: Add first interval
+    ans.push_back(intervals[0]);
+
+    // Step 3: Traverse remaining intervals
+    for (int i = 1; i < intervals.size(); i++) {
+
+        vector<int>& last = ans.back();     // last merged interval
+        vector<int>& curr = intervals[i];   // current interval
+
+        // Step 4: Check overlap:
+        // Current is starting on or before previous ending
+        if (curr[0] <= last[1]) {
+            // Merge by updating end
+            last[1] = max(last[1], curr[1]);
+        } else {
+            // No overlap → add new interval
+            ans.push_back(curr);
+        }
+    }
+
+    return ans;
+}
+```
+
+
+#### Questions
+* ⬜ **Merge Intervals**
+  🔗 [https://leetcode.com/problems/merge-intervals/](https://leetcode.com/problems/merge-intervals/)
+  🧠 Insight: Classic sort + merge
+
+* ⬜ **Non-overlapping Intervals**
+  🔗 [https://leetcode.com/problems/non-overlapping-intervals/](https://leetcode.com/problems/non-overlapping-intervals/)
+  🧠 Insight: Remove minimum overlaps (greedy)
+
+* ⬜ **Meeting Rooms II**
+  🔗 [https://leetcode.com/problems/meeting-rooms-ii/](https://leetcode.com/problems/meeting-rooms-ii/)
+  🧠 Insight: Variation using sorting / heap
+
+### 9.2 Insert and Merge Interval
+
+#### Used when:
+
+* Given:
+
+  * **sorted non-overlapping intervals**
+  * * **1 new interval**
+* Need to:
+
+  * Insert at correct position
+  * Merge overlaps
+* Pattern: **3 phases**
+
+  1. Add non-overlapping left
+  2. Merge overlapping
+  3. Add remaining right
+
+---
+
+#### Template:
+
+```cpp
+// 🔹 INTUITION:
+// Divide into 3 parts:
+// 1. Add all intervals before overlap
+// 2. Merge overlapping intervals
+// 3. Add remaining intervals
+
+vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+    vector<vector<int>> ans;
+    int i = 0, n = intervals.size();
+
+    // Step 1: Add all intervals completely before newInterval
+    //i.e. Current interval ends before new interval starts
+    // (Initial stage)
+    /*
+    intervals[i] :  [----]
+    newInterval  :          [----]
+    */
+    while (i < n && intervals[i][1] < newInterval[0]) {
+        ans.push_back(intervals[i]);
+        i++;
+    }
+
+    // Step 2: Merge all overlapping intervals
+    //I.e. all those intervals that are starting before new interval ends[Overlapping condition:current starting before previous end]
+    //(Intermediate stage)
+    /*
+    intervals[i] :  [----]
+    newInterval  :     [----]
+    */
+    while (i < n && intervals[i][0] <= newInterval[1]) {
+        newInterval[0] = min(newInterval[0], intervals[i][0]);
+        newInterval[1] = max(newInterval[1], intervals[i][1]);
+        i++;
+    }
+    ans.push_back(newInterval);
+
+    // Step 3: Add remaining intervals
+    while (i < n) {
+        ans.push_back(intervals[i]);
+        i++;
+    }
+
+    return ans;
+}
+```
+
+---
+
+#### Questions
+
+* ⬜ **Insert Interval**
+  🔗 [https://leetcode.com/problems/insert-interval/](https://leetcode.com/problems/insert-interval/)
+  🧠 Insight: 3-phase merging
+
+* ⬜ **Interval List Intersections**
+  🔗 [https://leetcode.com/problems/interval-list-intersections/](https://leetcode.com/problems/interval-list-intersections/)
+  🧠 Insight: Two pointer overlap logic
+
+* ⬜ **Employee Free Time**
+  🔗 [https://leetcode.com/problems/employee-free-time/](https://leetcode.com/problems/employee-free-time/)
+  🧠 Insight: Merge + gap finding
+
+### 9.3 Line Sweep Algo
+
+#### Used when:
+
+* When you need:
+
+  * **Max overlapping intervals**
+  * **Min resources required**
+  * **Concurrent events**
+* Problems like:
+
+  * Meeting rooms
+  * Max guests in party
+* Core idea:
+  👉 Convert intervals → **events (start +1, end -1)**
+  👉 Sort events → sweep line
+
+---
+
+#### Template:
+
+```cpp
+// 🔹 INTUITION:
+// Convert intervals into events:
+// start → +1 (resource needed)
+// end   → -1 (resource freed)
+// Sort events → process in order → track max overlap
+
+int minMeetingRooms(vector<vector<int>>& intervals) {
+    vector<pair<int, int>> events;
+
+    // Step 1: Create events
+    for (auto& interval : intervals) {
+        events.push_back({interval[0], +1}); // start
+        events.push_back({interval[1], -1}); // end
+    }
+
+    // Step 2: Sort events
+    // If same time → end (-1) should come before start (+1)
+    sort(events.begin(), events.end(), [](auto& a, auto& b) {
+        if (a.first == b.first)
+            return a.second < b.second; // -1 before +1
+        return a.first < b.first;
+    });
+
+    int curr = 0, maxRooms = 0;
+
+    // Step 3: Sweep line
+    for (auto& event : events) {
+        curr += event.second;            // update active intervals
+        maxRooms = max(maxRooms, curr);  // track max overlap
+    }
+
+    return maxRooms;
+}
+```
+
+---
+
+#### Questions
+
+
+* ⬜ **Meeting Rooms II**
+  🔗 [https://leetcode.com/problems/meeting-rooms-ii/](https://leetcode.com/problems/meeting-rooms-ii/)
+  🧠 Insight: Min rooms = max overlap
+
+* ⬜ **Maximum Number of Events Attended**
+  🔗 [https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/](https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/)
+  🧠 Insight: Sweep + greedy
+
+* ⬜ **Car Pooling**
+  🔗 [https://leetcode.com/problems/car-pooling/](https://leetcode.com/problems/car-pooling/)
+  🧠 Insight: Line sweep with capacity constraint
+
 ---
 ---
 ## 10. Binary Tree Traversal
-#### 10.1 PreOrder DFS (Root → Left → Right)
-##### Used when:
+### 10.1 PreOrder DFS (Root → Left → Right)
+#### Used when:
 * You need to **create/copy a tree**
 * Useful in **serialization/deserialization**
 * When **root must be processed before children**
 * Problems involving **top-down propagation (path, prefix building)**
 
-##### Template:
+#### Template:
 ```cpp
 // 1. Recursive Approach
 // Intuition:
@@ -1399,7 +1652,7 @@ vector<Node*> preOrder(Node* root) {
     return ans;
 }
 ```
-##### Questions for PreOrder:
+#### Questions for PreOrder:
 
 * ⬜ **Binary Tree Preorder Traversal**
   🔗 [https://leetcode.com/problems/binary-tree-preorder-traversal/](https://leetcode.com/problems/binary-tree-preorder-traversal/)
@@ -1419,13 +1672,13 @@ vector<Node*> preOrder(Node* root) {
 
 ---
 
-#### 10.2 InOrder DFS (Left → Root → Right)
-##### Used when:
+### 10.2 InOrder DFS (Left → Root → Right)
+#### Used when:
 * For **BST → gives sorted order**
 * When you need **increasing/decreasing sequence**
 * Problems involving **kth smallest/largest**
 * Validate **BST property**
-##### Template
+#### Template
 
 ```cpp
 // 1. Recursive Approach
@@ -1469,7 +1722,7 @@ vector<Node*> inOrder(Node* root) {
     return ans;
 }
 ```
-##### Questions for InOrder:
+#### Questions for InOrder:
 
 * ⬜ **Binary Tree Inorder Traversal**
   🔗 [https://leetcode.com/problems/binary-tree-inorder-traversal/](https://leetcode.com/problems/binary-tree-inorder-traversal/)
@@ -1489,15 +1742,15 @@ vector<Node*> inOrder(Node* root) {
 
 ---
 
-#### 10.3 PostOrder DFS (Left → Right → Root)
+### 10.3 PostOrder DFS (Left → Right → Root)
 
-##### Used when:
+#### Used when:
 * When **children must be processed before parent**
 * Useful in **deletion of tree**
 * Problems like **diameter, height, DP on trees**
 * Bottom-up computations
 
-##### Template
+#### Template
 
 ```cpp
 // 1. Recursive Approach
@@ -1578,7 +1831,7 @@ vector<Node*> postOrder(Node* root) {
     return ans;
 }
 ```
-##### Questions for PostOrder:
+#### Questions for PostOrder:
 
 * ⬜ **Binary Tree Postorder Traversal**
   🔗 [https://leetcode.com/problems/binary-tree-postorder-traversal/](https://leetcode.com/problems/binary-tree-postorder-traversal/)
@@ -1594,9 +1847,9 @@ vector<Node*> postOrder(Node* root) {
 
 ---
 
-#### 10.4 BFS – Level Order Traversal
+### 10.4 BFS – Level Order Traversal
 
-##### Used when:
+#### Used when:
 
 * When traversal is **level by level**
 * Shortest path in **unweighted tree/graph**
@@ -1608,7 +1861,7 @@ vector<Node*> postOrder(Node* root) {
 
 ---
 
-##### Template :
+#### Template :
 
 ```cpp
 // Intuition:
@@ -1636,7 +1889,7 @@ vector<int> bfs(Node* root) {
 }
 ```
 
-##### Questions for Level Order:
+#### Questions for Level Order:
 
 * ⬜ **Binary Tree Level Order Traversal**
   🔗 [https://leetcode.com/problems/binary-tree-level-order-traversal/](https://leetcode.com/problems/binary-tree-level-order-traversal/)
