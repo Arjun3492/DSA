@@ -28,7 +28,7 @@ int rangeSum(const vector<int>& prefix, int l, int r) {
 ##### QUESTIONS: 
 * ⬜ **Range Sum Query - Immutable**
   🔗 [https://leetcode.com/problems/range-sum-query-immutable/description/](https://leetcode.com/problems/range-sum-query-immutable/description/)
-  🧠 Insight: We precompute the prefixSum array and then use it to return prefix between two indices
+  🧠 Insight: We precompute the prefixSum array and then use it to return subArray sum between two indices
 
 ### 1.2 Prefix Sum with HashMap (Target Strategy)
 Used to find count  of subarrays satisfying a given condition (e.g., count of subarray with sum = k or with k odd elements or sum divisible by K).
@@ -88,6 +88,7 @@ Note: In this prefixSum hashmap pattern we maintain three variable constrains:
 ```cpp
 int fn(vector<int>&nums,k){
     unordered_map<int,int> mpp;//prefixHashMap
+    mpp[0]=1 //account for subarrays starting from index 0
     int preFixSum=0;//prefixKey
     int ans=0;//ans needed to be returned
     for(int num:nums){
@@ -636,8 +637,8 @@ Note:
 | ------------------------------ | ------------ | --------------------------- | ---------- |
 | Next Greater Element (NGE)     | Left → Right | `nums[i] > nums[st.top()]`  | Decreasing |
 | Next Smaller Element (NSE)     | Left → Right | `nums[i] < nums[st.top()]`  | Increasing |
-| Previous Greater Element (PGE) | Left → Right | `nums[i] > nums[st.top()]` | Decreasing |
-| Previous Smaller Element (PSE) | Left → Right | `nums[i] < nums[st.top()]` | Increasing |
+| Previous Greater Element (PGE) | Right → Left | `nums[i] > nums[st.top()]` | Decreasing |
+| Previous Smaller Element (PSE) | Right → Left | `nums[i] < nums[st.top()]` | Increasing |
 
 Greater problems → Decreasing stack
 Smaller problems → Increasing stack
@@ -915,10 +916,14 @@ Two common cases:
 **First Occurrence / Minimum / First True**
 
 ```cpp
-if(isFeasible)
-    right = mid; //right might be the first true candidate so kept in search space
-else
-    left = mid+1;
+while(left < right){
+    mid = left + (right-left)/2;   // LEFT-biased mid to prevent infinite loop when left and right are adjacent
+
+    if(isFeasible(mid))
+        right = mid;
+    else
+        left = mid + 1;
+}
 ```
 
 * `mid` might be the **first valid position**, so we **keep it** in the search space.
@@ -928,10 +933,15 @@ else
 **Last Occurrence / Maximum / Last True**
 
 ```cpp
-if(isFeasible)
-    left = mid;//left might the last true candidate so kept kept in search space
-else
-    right = mid-1;
+while(left < right){
+    // RIGHT-biased mid to prevent infinite loop when left and right are adjacent
+    mid = left + (right-left+1)/2;   
+
+    if(isFeasible(mid))
+        left = mid;
+    else
+        right = mid - 1;
+}
 ```
 
 * `mid` might be the **last valid position**, so we **keep it** in the search space.
@@ -1040,46 +1050,35 @@ When we find the target, we don't stop immediately. Instead, we continue searchi
 */
 int findFirstOccurrence(vector<int> &nums, int target) {
     int left = 0, right = nums.size() - 1;
-    int result = -1;
     
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
+    while (left < right) {
+        int mid = left + (right - left) / 2; // LEFT-biased mid to prevent infinite loop when left and right are adjacent
         
-        if (nums[mid] == target) {
-            result = mid;           // Potential answer
-            right = mid - 1;        // Continue searching left for first occurrence
-        } 
-        else if (target < nums[mid]) {
-            right = mid - 1;
+        if (target<= nums[mid]) {
+            right = mid ;     
         } 
         else {
             left = mid + 1;
         }
     }
     
-    return result;
+    return left;
 }
 
 int findLastOccurrence(vector<int> &nums, int target) {
     int left = 0, right = nums.size() - 1;
-    int result = -1;
     
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        
-        if (nums[mid] == target) {
-            result = mid;           // Potential answer
-            left = mid + 1;         // Continue searching right for last occurrence
-        } 
-        else if (target < nums[mid]) {
-            right = mid - 1;
+    while (left < right) {
+        int mid = left + (right - left+1) / 2; // RIGHT-biased mid to prevent infinite loop when left and right are adjacent
+        if (target>= nums[mid]) {
+            left = mid;
         } 
         else {
-            left = mid + 1;
+            right = mid - 1;        
         }
     }
     
-    return result;
+    return left;
 }
 ```
 
@@ -1129,14 +1128,34 @@ Template for the same:
 
 ```cpp
 //Utility method to retrieve the answer search space
-pair<int,int> getSearchBounds(vector<int>& nums);
+pair<int,int> getSearchSpace(const vector<int>& arr) {
+    int low  = *max_element(arr.begin(), arr.end());
+    int high = accumulate(arr.begin(), arr.end(), 0);
+    return {low, high};
+}
 
 //Utility method to check if current solution is feasible
-bool checkFeasibility(vector<int>& nums, int mid, int k);
+bool isFeasible(const vector<int>& arr, int limit, int maxGroups) {
+    int groupsUsed = 1;
+    int currentGroupSum = 0;
+
+    for (int value : arr) {
+        if (currentGroupSum + value > limit) {
+            groupsUsed++;
+            currentGroupSum = value;
+
+            if (groupsUsed > maxGroups)
+                return false;
+        } else {
+            currentGroupSum += value;
+        }
+    }
+
+    return true;
+}
 
 int solve(vector<int> &nums, int k) {
 
-    int ans=-1;
     // Step 1: Define answer search space
     auto [left, right] = getSearchBounds(nums);
 
@@ -1145,7 +1164,7 @@ int solve(vector<int> &nums, int k) {
         int mid = left + (right - left) / 2;
 
         // Step 2: Check if this answer is feasible
-        bool isFeasible = checkFeasibility(nums, mid, k);
+        bool isFeasible = isFeasible(nums, mid, k);
 
         if (isFeasible) {
             // mid could be a possible answer, but we look for better smaller value
@@ -1188,27 +1207,39 @@ We can binary search on the answer space (capacity). The minimum possible capaci
 **Space Complexity**: O(1)
 */
 
+// Step 1: Get search space bounds
+pair<int,int> getSearchSpace(const vector<int>& arr) {
+    int low  = *max_element(arr.begin(), arr.end());
+    int high = accumulate(arr.begin(), arr.end(), 0);
+    return {low, high};
+}
+
 // Step 2: Feasibility check (checkFeasibility)
-bool canShipWithCapacity(vector<int> &weights, int capacity, int days) {
+bool isFeasible(const vector<int>& arr, int limit, int maxGroups) {
 
-    int currentWeight = 0;
-    int daysNeeded = 1;
+    // limit      -> ship capacity
+    // maxGroups  -> allowed days
+    // groupsUsed -> days used
+    // currentGroupSum -> current shipped weight in a day
 
-    for (int weight : weights) {
+    int currentGroupSum = 0;
+    int groupsUsed = 1;
+
+    for (int value : arr) {
 
         // If adding current package exceeds capacity, ship on next day
-        if (currentWeight + weight > capacity) {
+        if (currentGroupSum + value > limit) {
 
-            daysNeeded++;
-            currentWeight = weight;  // Start new day with current package
+            groupsUsed++;
+            currentGroupSum = value;  // Start new day with current package
 
             // If we exceed allowed days, this capacity is insufficient
-            if (daysNeeded > days) {
+            if (groupsUsed > maxGroups) {
                 return false;
             }
 
         } else {
-            currentWeight += weight;
+            currentGroupSum += value;
         }
     }
 
@@ -1217,25 +1248,21 @@ bool canShipWithCapacity(vector<int> &weights, int capacity, int days) {
 
 int shipWithinDays(vector<int> &weights, int days) {
 
-    int ans=-1;
-
     // Step 1: Define search bounds (getSearchBounds)
-    int left = *max_element(weights.begin(), weights.end());     // Min capacity
-    int right = accumulate(weights.begin(), weights.end(), 0);   // Max capacity
+    auto [left,right] = getSearchSpace(weights);
 
     while (left < right) {
 
         int mid = left + (right - left) / 2;
 
         // Step 2: Check feasibility of current answer
-        bool isFeasible = canShipWithCapacity(weights, mid, days);
+        bool feasible = isFeasible(weights, mid, days);
 
         // Step 3: Adjust search space
-        if (isFeasible) {
-             // mid works → try smaller capacity
-            right = mid;       
+        if (feasible) {
+            right = mid;       // mid works → try smaller capacity
         } else {
-            left = mid + 1;     // mid insufficient → increase capacity
+            left = mid + 1;    // mid insufficient → increase capacity
         }
     }
 
@@ -1273,68 +1300,74 @@ We binary search on the answer (maximum subarray sum). For each potential maximu
 **Space Complexity**: O(1)
 */
 
+// Step 1: Define search space (getSearchBounds)
+pair<int,int> getSearchSpace(const vector<int>& arr) {
+
+    // Lower bound: Maximum single element
+    // (Each subarray must contain at least one element)
+    int low = *max_element(arr.begin(), arr.end());
+
+    // Upper bound: Sum of all elements  
+    // (Entire array as single subarray)
+    int high = accumulate(arr.begin(), arr.end(), 0);
+
+    return {low, high};
+}
+
 // Step 2: Feasibility helper (checkFeasibility)
-bool canSplitWithinK(vector<int> &nums, int maxSum, int k) {
+bool isFeasible(const vector<int>& arr, int limit, int maxGroups) {
 
-    int currentSum = 0;
-    int partitions = 1;
+    // limit      -> allowed maximum subarray sum
+    // maxGroups  -> maximum partitions allowed (k)
+    // groupsUsed -> partitions formed
+    // currentGroupSum -> current partition sum
 
-    for (int num : nums) {
+    int currentGroupSum = 0;
+    int groupsUsed = 1;
+
+    for (int value : arr) {
 
         // Try to add current number to current partition
-        if (currentSum + num <= maxSum) {
-            currentSum += num;
-        }
-        else {
-            // Current number doesn't fit, start new partition
-            partitions++;
-            currentSum = num;
+        if (currentGroupSum + value > limit) {
 
-            // If partitions exceed k, this maxSum is not feasible
-            if (partitions > k) {
+            // Current number doesn't fit, start new partition
+            groupsUsed++;
+            currentGroupSum = value;
+
+            // If partitions exceed k, this limit is not feasible
+            if (groupsUsed > maxGroups) {
                 return false;
             }
+
+        } else {
+            currentGroupSum += value;
         }
     }
 
     return true;
 }
 
-// Step 1: Define search space (getSearchBounds)
-pair<int, int> getSearchBounds(vector<int> &nums) {
-
-    // Lower bound: Maximum single element
-    // (Each subarray must contain at least one element)
-    int lowerBound = *max_element(nums.begin(), nums.end());
-
-    // Upper bound: Sum of all elements  
-    // (Entire array as single subarray)
-    int upperBound = accumulate(nums.begin(), nums.end(), 0);
-
-    return {lowerBound, upperBound};
-}
-
 int splitArrayMinimizeMax(vector<int> &nums, int k) {
 
-    int ans=-1;
     // Step 1: Getting the bounds for answer space
-    auto [left, right] = getSearchBounds(nums);
+    auto [left, right] = getSearchSpace(nums);
 
     while (left < right) {
 
         int mid = left + (right - left) / 2;
 
         // Step 2: Evaluate feasibility of candidate answer
-        bool isFeasible = canSplitWithinK(nums, mid, k);
-
+        bool feasible = isFeasible(nums, mid, k);
 
         // Step 3: Adjust search space
-        if (isFeasible) {
+        if (feasible) {
+
             // We can split with this max sum using ≤ k partitions
             // Try to minimize further
             right = mid;
 
         } else {
+
             // Need more than k partitions with this max sum
             // Increase the allowed maximum sum
             left = mid + 1;
@@ -1345,6 +1378,7 @@ int splitArrayMinimizeMax(vector<int> &nums, int k) {
     return left;  // Minimum possible maximum subarray sum
 }
 ```
+
 ---
 ---
 ## 9 Overlapping Intervals
@@ -1364,7 +1398,7 @@ Use this in almost every interval problem:
 
 ```cpp
 // Two intervals [a, b] and [c, d] overlap if:
-if (c <= b && a <= d)
+if (max(a,c) <= min(b,d))
 ```
 
 Or simplified (when sorted):
@@ -1431,16 +1465,45 @@ vector<vector<int>> merge(vector<vector<int>>& intervals) {
 
 #### Questions
 * ⬜ **Merge Intervals**
-  🔗 [https://leetcode.com/problems/merge-intervals/](https://leetcode.com/problems/merge-intervals/)
-  🧠 Insight: Classic sort + merge
+  🔗 [Link](https://leetcode.com/problems/merge-intervals/)
+  🧠 Insight: We first sort the intervals by start time and then while traversing the intervals we check if its starts before the previous one ends(overlap) then we merge the interval and add the merged interval to the final list else add the non overlapping interval to the list as it is
+
+* ⬜ **Minimum Number of Arrows to Burst Balloons**
+  🔗 [Link](https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/)
+  🧠 Insight: Minimum number of arrows to burst balloons = "Maximum overlapping intervals" 
+  To find max non overlapping intervals we sort by end and then check if current interval is not overlapping with the last end, if not we increment count and update the last end
+
+  **Note**: We sort by end so we free up space as early as possible, maximizing room for future intervals.
+```cpp
+int maxNonOverlapping(vector<vector<int>>& intervals) {
+    if (intervals.empty()) return 0;
+
+    // 1. Sort by end time (greedy choice)
+    sort(intervals.begin(), intervals.end(),
+         [](auto &a, auto &b) { return a[1] < b[1]; });
+
+    int count = 1;                         // first interval is always taken
+    int prevEnd = intervals[0][1];         // end of last chosen interval
+
+    // 2. Traverse intervals
+    for (int i = 1; i < intervals.size(); i++) {
+
+        // if non-overlapping → take it
+        if (intervals[i][0] >= prevEnd) {  // use >= for inclusive intervals
+            count++;
+            prevEnd = intervals[i][1];     // update last end
+        }
+        // else → overlap → skip
+    }
+
+    return count;
+}
+```
 
 * ⬜ **Non-overlapping Intervals**
-  🔗 [https://leetcode.com/problems/non-overlapping-intervals/](https://leetcode.com/problems/non-overlapping-intervals/)
-  🧠 Insight: Remove minimum overlaps (greedy)
-
-* ⬜ **Meeting Rooms II**
-  🔗 [https://leetcode.com/problems/meeting-rooms-ii/](https://leetcode.com/problems/meeting-rooms-ii/)
-  🧠 Insight: Variation using sorting / heap
+  🔗 [Link](https://leetcode.com/problems/non-overlapping-intervals/)
+  🧠 Insight: Minimum number of overlapping interval(needed to remove) = Total intervals - Max number of non-overlapping intervals (same as above)
+---
 
 ### 9.2 Insert and Merge Interval
 
@@ -1460,7 +1523,6 @@ vector<vector<int>> merge(vector<vector<int>>& intervals) {
   2. Merge overlapping
   3. Add remaining right
 
----
 
 #### Template:
 
@@ -1523,9 +1585,6 @@ vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInter
   🔗 [https://leetcode.com/problems/interval-list-intersections/](https://leetcode.com/problems/interval-list-intersections/)
   🧠 Insight: Two pointer overlap logic
 
-* ⬜ **Employee Free Time**
-  🔗 [https://leetcode.com/problems/employee-free-time/](https://leetcode.com/problems/employee-free-time/)
-  🧠 Insight: Merge + gap finding
 
 ### 9.3 Line Sweep Algo
 
@@ -1592,14 +1651,6 @@ int minMeetingRooms(vector<vector<int>>& intervals) {
 * ⬜ **Meeting Rooms II**
   🔗 [https://leetcode.com/problems/meeting-rooms-ii/](https://leetcode.com/problems/meeting-rooms-ii/)
   🧠 Insight: Min rooms = max overlap
-
-* ⬜ **Maximum Number of Events Attended**
-  🔗 [https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/](https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/)
-  🧠 Insight: Sweep + greedy
-
-* ⬜ **Car Pooling**
-  🔗 [https://leetcode.com/problems/car-pooling/](https://leetcode.com/problems/car-pooling/)
-  🧠 Insight: Line sweep with capacity constraint
 
 ---
 ---
