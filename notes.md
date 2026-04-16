@@ -1409,7 +1409,7 @@ if (curr_start <= prev_end)
 
 ---
 
-### 9.1 Merge Overlapping Intervals
+### 9.1 Merge Overlapping Intervals / Select non overlapping Intervals
 #### Used when:
 
 * Given **random intervals → merge overlapping ones**
@@ -1500,9 +1500,9 @@ int maxNonOverlapping(vector<vector<int>>& intervals) {
 }
 ```
 
-* ⬜ **Non-overlapping Intervals**
+* ⬜ **Non-overlapping Intervals(Num of min overlapping intervals)**
   🔗 [Link](https://leetcode.com/problems/non-overlapping-intervals/)
-  🧠 Insight: Minimum number of overlapping interval(needed to remove) = Total intervals - Max number of non-overlapping intervals (same as above)
+  🧠 Insight: Minimum number of overlapping interval(needed to remove) = Total intervals - number of non-overlapping intervals (same as above)
 ---
 
 ### 9.2 Insert and Merge Interval
@@ -1863,15 +1863,17 @@ vector<Node*> postOrder(Node* root) {
     while (curr || !st.empty()) {
 
         if (curr) {
+            //go extreme left
             st.push(curr);
             curr = curr->left;
         } else {
             Node* node = st.top();
 
-            // If right exists and not processed
+            // If right exists and not processed , go right
             if (node->right && lastVisited != node->right) {
                 curr = node->right;
             } else {
+                //process node and update lastVisited
                 ans.push_back(node);
                 st.pop();
                 lastVisited = node;
