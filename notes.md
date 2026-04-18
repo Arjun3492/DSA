@@ -1756,18 +1756,19 @@ vector<Node*> inOrder(Node* root) {
     while (curr || !st.empty()) {
 
         // Step 1: Go to extreme left
-        while (curr) {
+        if (curr) {
             st.push(curr);
             curr = curr->left;
+        }else{
+            // Step 2: Process node
+            curr = st.top();
+            st.pop();
+            ans.push_back(curr);
+    
+            // Step 3: Move to right subtree
+            curr = curr->right;
         }
 
-        // Step 2: Process node
-        curr = st.top();
-        st.pop();
-        ans.push_back(curr);
-
-        // Step 3: Move to right subtree
-        curr = curr->right;
     }
 
     return ans;
